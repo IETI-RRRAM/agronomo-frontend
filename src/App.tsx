@@ -1,35 +1,45 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { Suspense } from 'react';
+const HomePage = React.lazy(() => import("src/pages/HomePage"));
+const RanchPage = React.lazy(() => import("src/pages/RanchPage"));
+const NotFound = React.lazy(() => import("src/pages/NotFoundPage"));
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
+    <BrowserRouter>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/ranches">Ranches</Link>
+            </li>
+          </ul>
+        </nav>
+
+        <Routes>
+          <Route index element={
+            <Suspense fallback={<div>loading ...</div>}>
+              <HomePage />
+            </Suspense>
+          } />
+          <Route path="ranches" element={
+            <Suspense fallback={<div>loading ...</div>}>
+              <RanchPage />
+            </Suspense>
+          } />
+          <Route path="*" element={
+            <Suspense fallback={<div>loading ...</div>}>
+              <NotFound />
+            </Suspense>
+          } />
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+    </BrowserRouter>
+  );
 }
 
 export default App
