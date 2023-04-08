@@ -14,9 +14,9 @@ const Form = ({title, children, onSubmit, isValid, buttonText}: FormProps) => {
         <>
             <div className='form-title'><h1>{title}</h1></div>
             <form className='form-group' onSubmit={onSubmit}>
-                <div className='form-items'>
+                <main className='form-items'>
                     {children}
-                </div>
+                </main>
                 <button className='submit-button' disabled={!isValid}>{buttonText}</button>
             </form>
         </>

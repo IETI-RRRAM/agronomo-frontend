@@ -1,0 +1,34 @@
+.collection-card {
+    background-color: var(--main-color-dark);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+.collection-card *{
+    color: white;
+}
+
+.edit {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.edit-button{
+    z-index: 2;
+    background-color: transparent;
+    border: none;
+}
+
+.edit-button:hover{
+    cursor: pointer;
+}
+.card-image {
+    cursor: pointer;
+}
+.card-title {
+    cursor: pointer;
+    align-self: center;
+}

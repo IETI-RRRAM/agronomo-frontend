@@ -1,0 +1,46 @@
+.header-container {
+    padding: 0.2rem 2rem;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 0 15px 5px #b1b1b1;
+}
+.fix {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    transition: all 1s ease;
+}
+
+ul {
+    list-style-type: none;
+    display: flex;
+    margin: none;
+    padding: none;
+}
+
+ul > li {
+    padding: 0.5rem 1rem;
+    margin: 0 1rem;
+    border-radius: 5rem;
+}
+
+ul > li:hover {
+    background-color: var(--main-color-gray);
+    cursor: pointer;
+}
+
+.header-container h2 {
+    color: var(--main-color);
+    text-shadow: 0 0 5px #e7e7e7;
+}
+
+.material-symbols-outlined {
+    color: var(--main-color);
+    font-variation-settings:
+    'FILL' 1,
+    'wght' 700,
+    'GRAD' -25,
+    'opsz' 48
+}

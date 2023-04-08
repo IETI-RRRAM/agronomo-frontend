@@ -4,40 +4,38 @@ import { Suspense } from 'react';
 const HomePage = React.lazy(() => import("src/pages/HomePage"));
 const RanchPage = React.lazy(() => import("src/pages/RanchPage"));
 const NotFound = React.lazy(() => import("src/pages/NotFoundPage"));
+const AppLayout = React.lazy(() => import("src/layouts/AppLayout"));
 
 function App() {
   return (
     <BrowserRouter>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/ranches">Ranches</Link>
-            </li>
-          </ul>
-        </nav>
-
-        <Routes>
-          <Route index element={
-            <Suspense fallback={<div>loading ...</div>}>
+      <Routes>
+        <Route index element={
+          <Suspense fallback={<div>loading ...</div>}>
+            <AppLayout>
               <HomePage />
-            </Suspense>
-          } />
-          <Route path="ranches" element={
-            <Suspense fallback={<div>loading ...</div>}>
+            </AppLayout>
+          </Suspense>
+        } />
+        <Route path="ranches" element={
+          <Suspense fallback={<div>loading ...</div>}>
+            <AppLayout>
               <RanchPage />
-            </Suspense>
-          } />
-          <Route path="*" element={
-            <Suspense fallback={<div>loading ...</div>}>
+              <RanchPage />
+              <RanchPage />
+              <RanchPage />
+              <RanchPage />
+            </AppLayout>
+          </Suspense>
+        } />
+        <Route path="*" element={
+          <Suspense fallback={<div>loading ...</div>}>
+            <AppLayout>
               <NotFound />
-            </Suspense>
-          } />
-        </Routes>
-      </div>
+            </AppLayout>
+          </Suspense>
+        } />
+      </Routes>
     </BrowserRouter>
   );
 }
