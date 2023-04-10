@@ -1,37 +1,42 @@
-import  HelpButton from 'src/components/help/HelpButton'
-import  CollectionCard from 'src/components/collectionCard/CollectionCard'
-import './Collection.css'
+import  HelpButton from 'src/components/buttons/help/HelpButton';
+import AddButton from 'src/components/buttons/add/AddButton';
+import  CollectionCard from 'src/components/collectionCard/CollectionCard';
 import { useEffect, useState } from 'react';
-import getService from 'src/services/getService'
+import getService from 'src/services/getService';
+import './Collection.css';
 
 type FormProps = {
     title: string;
     cardTitle: string;
     cardDescription: string;
-    urlEndpoint: string;
+    endpointUrl: string;
+    iconUrl: string;
+    addUrl: string;
+    editUrl: string;
+    cardUrl: string;
 };
 
-const Collection = ({title, cardTitle, cardDescription, urlEndpoint}: FormProps) => {
+const Collection = ({title, cardTitle, cardDescription, endpointUrl, iconUrl, addUrl, editUrl, cardUrl}: FormProps) => {
 
     const [itemsCollection, setItemsCollection] = useState([]);
 
 
     // Se está usando un url de ejemplo tiene que ser sustituida por nuestros endpoints
     useEffect(() => {
-        getService(urlEndpoint).then((response) => setItemsCollection(response.slice(0, 5)));
+        getService(endpointUrl).then((response) => setItemsCollection(response.slice(0, 5)));
     }, []);
-    
     return (
         <div className='container'>
             <div className='collection-title'><h1>{title}</h1></div>
-            <HelpButton title={cardTitle} description={cardDescription}></HelpButton>
             <main className='card-group'>
                 {
-                    itemsCollection.map((item, index) => {
-                        return <CollectionCard key={index} icon={'src/assets/tractor.svg'} editUrl={`farms/edit/${index + 1}`} name={`Tractor ${index + 1}`} detailUrl={`ranches/${index + 1}`}/>
+                    itemsCollection.map((item: any, index) => {
+                        return <CollectionCard key={index} icon={iconUrl} editUrl={`${editUrl}${index + 1}`} name={`${item.title.substring(0, 8)}`} detailUrl={`${cardUrl}${item.id}`}/>
                     })
                 }
             </main>
+            <HelpButton title={cardTitle} description={cardDescription} />
+            <AddButton redirectUrl={addUrl} />
         </div>
     )
 }
