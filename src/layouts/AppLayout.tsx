@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom'
+import BackButton from 'src/components/buttons/goback/BackButton';
 const Header = React.lazy(() => import("src/components/header/Header"));
 
 type AppProps = {
@@ -11,6 +11,7 @@ const AppLayout = ({children}: AppProps) => {
     return (
         <>  
             <Header />
+            <BackButton />
             {children}
         </>
     )
