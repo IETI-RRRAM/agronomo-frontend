@@ -12,27 +12,28 @@ const NewAnimal = React.lazy(() => import("src/pages/NewAnimalPage"));
 const NewLand = React.lazy(() => import("src/pages/NewLandPage"));
 const AnimalData = React.lazy(() => import("src/pages/AnimalDataPage"));
 const NotFound = React.lazy(() => import("src/pages/NotFoundPage"));
+const Loading = React.lazy(() => import("src/components/loading/Loading"));
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route index element={
-          <Suspense fallback={<div>loading ...</div>}>
+          <Suspense fallback={<Loading />}>
             <AppLayout>
               <HomePage />
             </AppLayout>
           </Suspense>
         } />
         <Route path="farms/new" element={
-          <Suspense fallback={<div>loading ...</div>}>
+          <Suspense fallback={<Loading />}>
             <AppLayout>
               <NewFarm />
             </AppLayout>
           </Suspense>
         } />
         <Route path="farms/edit/:id" element={
-          <Suspense fallback={<div>loading ...</div>}>
+          <Suspense fallback={<Loading />}>
             <AppLayout>
               <NewFarm />
             </AppLayout>
@@ -67,49 +68,49 @@ function App() {
           </Suspense>
         } />
         <Route path="ranches/:id" element={
-          <Suspense fallback={<div>loading ...</div>}>
+          <Suspense fallback={<Loading />}>
             <AppLayout>
               <RanchPage />
             </AppLayout>
           </Suspense>
         } />
         <Route path="ranches/new" element={
-          <Suspense fallback={<div>loading ...</div>}>
+          <Suspense fallback={<Loading />}>
             <AppLayout>
               <NewRanch />
             </AppLayout>
           </Suspense>
         } />
         <Route path="ranches/edit/:id" element={
-          <Suspense fallback={<div>loading ...</div>}>
+          <Suspense fallback={<Loading />}>
             <AppLayout>
               <NewRanch />
             </AppLayout>
           </Suspense>
         } />
         <Route path="lands/:id" element={
-          <Suspense fallback={<div>loading ...</div>}>
+          <Suspense fallback={<Loading />}>
             <AppLayout>
               <LandPage />
             </AppLayout>
           </Suspense>
         } />
         <Route path="lands/new" element={
-          <Suspense fallback={<div>loading ...</div>}>
+          <Suspense fallback={<Loading />}>
             <AppLayout>
               <NewLand />
             </AppLayout>
           </Suspense>
         } />
         <Route path="lands/edit/:id" element={
-          <Suspense fallback={<div>loading ...</div>}>
+          <Suspense fallback={<Loading />}>
             <AppLayout>
               <NewLand />
             </AppLayout>
           </Suspense>
         } />
         <Route path="*" element={
-          <Suspense fallback={<div>loading ...</div>}>
+          <Suspense fallback={<Loading />}>
             <AppLayout>
               <NotFound />
             </AppLayout>

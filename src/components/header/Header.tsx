@@ -21,7 +21,7 @@ const Header = () => {
         <header id={'header'} className='header-container'>
             <h2>Agrónomo</h2>
             <nav>
-                <ul>
+                <ul className='link-list'>
                     <li>
                         <Link to="/">Home</Link>
                     </li>

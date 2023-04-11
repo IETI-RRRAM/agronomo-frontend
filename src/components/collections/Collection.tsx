@@ -1,8 +1,9 @@
-import  HelpButton from 'src/components/buttons/help/HelpButton';
+import HelpButton from 'src/components/buttons/help/HelpButton';
 import AddButton from 'src/components/buttons/add/AddButton';
-import  CollectionCard from 'src/components/collectionCard/CollectionCard';
-import { useEffect, useState } from 'react';
+import CollectionCard from 'src/components/collectionCard/CollectionCard';
+import InfoCard from 'src/components/infoCard/InfoCard';
 import getService from 'src/services/getService';
+import { useEffect, useState } from 'react';
 import './Collection.css';
 
 type FormProps = {
@@ -14,10 +15,14 @@ type FormProps = {
     addUrl: string;
     editUrl: string;
     cardUrl: string;
+    haveInfo?: boolean;
+    infoCardTitle?: string;
 };
 
-const Collection = ({title, cardTitle, cardDescription, endpointUrl, iconUrl, addUrl, editUrl, cardUrl}: FormProps) => {
+const Collection = ({title, cardTitle, cardDescription, endpointUrl, iconUrl, addUrl, editUrl, cardUrl, haveInfo, infoCardTitle}: FormProps) => {
 
+    const [collectionInfo, setCollectionInfo] = useState(
+    );
     const [itemsCollection, setItemsCollection] = useState([]);
 
 
@@ -27,7 +32,10 @@ const Collection = ({title, cardTitle, cardDescription, endpointUrl, iconUrl, ad
     }, []);
     return (
         <div className='container'>
-            <div className='collection-title'><h1>{title}</h1></div>
+            <div className='collection-title'>
+                <h1>{title}</h1>
+                {haveInfo && <InfoCard cardTitle={infoCardTitle ?? ''} info={collectionInfo}></InfoCard>}
+            </div>
             <main className='card-group'>
                 {
                     itemsCollection.map((item: any, index) => {
