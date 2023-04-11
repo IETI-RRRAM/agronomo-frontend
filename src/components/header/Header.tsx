@@ -19,7 +19,7 @@ const Header = () => {
 
     return (
         <header id={'header'} className='header-container'>
-            <h2>Agrónomo</h2>
+            <img src="/src/assets/logo.png" alt="logo" height={50} />
             <nav>
                 <ul className='link-list'>
                     <li>
