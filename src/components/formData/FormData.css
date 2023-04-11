@@ -1,0 +1,26 @@
+
+.contenedor {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 35px;
+}
+
+.producto {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: calc(100% - 120px);
+    border-radius: 20px;
+    border: 5px solid #4CAF50;
+}
+
+.image-animal {
+    border-radius: 10px;
+    width: 350px;
+    height: 350px;
+    object-fit: cover;
+}

@@ -13,7 +13,7 @@ const RanchPage = () => {
       iconUrl='/src/assets/fence.svg'
       addUrl='/ranches/new'
       editUrl='/ranches/edit/'
-      cardUrl='/animal/'
+      cardUrl='/animals/'
     />
   )
 }
