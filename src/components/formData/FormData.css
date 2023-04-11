@@ -9,18 +9,59 @@
     font-size: 35px;
 }
 
-.producto {
+.informacion-animal {
     display: flex;
     justify-content: space-around;
     align-items: center;
     width: calc(100% - 120px);
+    height: 100%;
     border-radius: 20px;
     border: 5px solid #4CAF50;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    margin-top: 20px;
 }
 
 .image-animal {
     border-radius: 10px;
-    width: 350px;
-    height: 350px;
+    width: 70%;
+    height: 70%;
     object-fit: cover;
+    margin-bottom: 10px;
 }
+
+.name-animal {
+    text-align: center;
+    width: 100%;
+    font-size: 20px;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.info-general {
+    width: 50%;
+}
+
+.info-principal {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.info-icons {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 30%;
+    height: 50px;
+}
+
+.material-symbols-outlined.icon-animal {
+  font-size: 50px;
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+}
+
