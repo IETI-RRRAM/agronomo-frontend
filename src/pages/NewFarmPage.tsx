@@ -2,12 +2,14 @@ import Form from 'components/form/Form';
 import FormItem from 'components/formItem/FormItem';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { uploadFile } from '../../firebase/config'
 
 interface FormType {
   location: undefined | string;
   name: undefined | string;
   area: undefined | string;
   purpose: undefined | string;
+  image: undefined | string;
 }
 
 const NewFarmPage = () => {
@@ -25,22 +27,32 @@ const NewFarmPage = () => {
     const [name, setName] = useState('');
     const [area, setArea] = useState('');
     const [purpose, setPurpose] = useState('');
+    const [image, setImage] = useState<any>('');
+    const [imageName, setImageName] = useState<any>('');
   
     const [validForm, setValidForm] = useState<FormType>({
       location: undefined,
       name: undefined,
       area: undefined,
-      purpose: undefined
+      purpose: undefined,
+      image: '',
     });
 
-    const onSubmit = (event: any): void => {
+    const onSubmit = async (event: any) => {
+      event.preventDefault();
+      let fileUrl = '';
+      if (image !== '') {
+        fileUrl = await uploadFile(image).then((file) => {
+          return file;
+        }) ?? ''
+      }
       const formData = {
         name: name,
         location: location,
         area: Number(area),
-        purpose: purpose
+        purpose: purpose,
+        image: fileUrl
       };
-      event.preventDefault();
       console.log(formData);
       // postService(URL, formData);
     };
@@ -87,6 +99,13 @@ const NewFarmPage = () => {
       setArea(value);
     }
 
+    const handleImageChange = (event: any) => {
+      const selectedFile = event.target.files[0];
+      const value = event.target.value;
+      setImage(selectedFile || '');
+      setImageName(value);
+    }
+
     const isValid = Object.keys(validForm).every(
       (key) => validForm[key as keyof typeof validForm] === ''
     )
@@ -124,6 +143,15 @@ const NewFarmPage = () => {
         value={area}
         onChagne={handleAreaChange}
         error={validForm.area}
+    />
+    <FormItem 
+        title={'Imagen:'}
+        placeHolder={'Suba una imagen de su granja'}
+        type={'file'}
+        value={imageName}
+        onChagne={handleImageChange}
+        accept=".jpg, .jpeg, .png"
+        error={validForm.image}
     />
     
     </Form>);

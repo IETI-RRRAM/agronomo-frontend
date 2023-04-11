@@ -14,6 +14,8 @@ const LandPage = () => {
       addUrl='/lands/new'
       editUrl='/lands/edit/'
       cardUrl='/ranches/'
+      infoCardTitle='Información de la granja a la que pretenece el potrero'
+      haveInfo
     />
   )
 }

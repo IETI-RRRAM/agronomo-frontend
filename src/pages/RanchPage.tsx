@@ -14,6 +14,8 @@ const RanchPage = () => {
       addUrl='/ranches/new'
       editUrl='/ranches/edit/'
       cardUrl='/animal/'
+      infoCardTitle='Información del potrero a la que pretenece el rancho'
+      haveInfo
     />
   )
 }
