@@ -1,0 +1,5 @@
+.loader {
+    display: grid;
+    place-content: center;
+    height: 90vh;
+}

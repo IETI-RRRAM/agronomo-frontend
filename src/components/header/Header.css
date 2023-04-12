@@ -13,20 +13,20 @@
     transition: all 1s ease;
 }
 
-ul {
+.link-list {
     list-style-type: none;
     display: flex;
     margin: 0;
     padding: 0;
 }
 
-ul > li {
+.link-list > li {
     padding: 0.5rem 1rem;
     margin: 0 1rem;
-    border-radius: 5rem;
+    border-radius: 1rem;
 }
 
-ul > li:hover {
+.link-list > li:hover {
     background-color: var(--main-color-gray);
     cursor: pointer;
 }

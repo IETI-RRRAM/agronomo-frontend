@@ -11,6 +11,7 @@ const NewFarm = React.lazy(() => import("src/pages/NewFarmPage"));
 const NewRanch = React.lazy(() => import("src/pages/NewRanchPage"));
 const NewLand = React.lazy(() => import("src/pages/NewLandPage"));
 const NotFound = React.lazy(() => import("src/pages/NotFoundPage"));
+const Loading = React.lazy(() => import("src/components/loading/Loading"));
 
 function App() {
   const {token}: {token: string | undefined} = useContext(AuthContext);
@@ -18,70 +19,70 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route index element={
-            <Suspense fallback={<div>loading ...</div>}>
+            <Suspense fallback={<Loading />}>
               <AppLayout>
                 {token ? <HomePage/> : <LoginPage/>}
               </AppLayout>
             </Suspense>
           } />
           <Route path="farms/new" element={
-            <Suspense fallback={<div>loading ...</div>}>
+            <Suspense fallback={<Loading />}>
               <AppLayout>
                 {token ? <HomePage/> : <NewFarm />}
               </AppLayout>
             </Suspense>
           } />
           <Route path="farms/edit/:id" element={
-            <Suspense fallback={<div>loading ...</div>}>
+            <Suspense fallback={<Loading />}>
               <AppLayout>
                 {token ? <HomePage/> : <NewFarm />}
               </AppLayout>
             </Suspense>
           } />
           <Route path="ranches/:id" element={
-            <Suspense fallback={<div>loading ...</div>}>
+            <Suspense fallback={<Loading />}>
               <AppLayout>
                 {token ? <HomePage/> : <RanchPage />}
               </AppLayout>
             </Suspense>
           } />
           <Route path="ranches/new" element={
-            <Suspense fallback={<div>loading ...</div>}>
+            <Suspense fallback={<Loading />}>
               <AppLayout>
                {token ? <HomePage/> : <NewRanch />}
               </AppLayout>
             </Suspense>
           } />
           <Route path="ranches/edit/:id" element={
-            <Suspense fallback={<div>loading ...</div>}>
+            <Suspense fallback={<Loading />}>
               <AppLayout>
                 {token ? <HomePage/> : <NewRanch />}
               </AppLayout>
             </Suspense>
           } />
           <Route path="lands/:id" element={
-            <Suspense fallback={<div>loading ...</div>}>
+            <Suspense fallback={<Loading />}>
               <AppLayout>
                 {token ? <HomePage/> : <LandPage />}
               </AppLayout>
             </Suspense>
           } />
           <Route path="lands/new" element={
-            <Suspense fallback={<div>loading ...</div>}>
+            <Suspense fallback={<Loading />}>
               <AppLayout>
                 {token ? <HomePage/> : <NewLand />}
               </AppLayout>
             </Suspense>
           } />
           <Route path="lands/edit/:id" element={
-            <Suspense fallback={<div>loading ...</div>}>
+            <Suspense fallback={<Loading />}>
               <AppLayout>
                 {token ? <HomePage/> : <NewLand />}
               </AppLayout>
             </Suspense>
           } />
           <Route path="*" element={
-            <Suspense fallback={<div>loading ...</div>}>
+            <Suspense fallback={<Loading />}>
               <AppLayout>
                 {token ? <HomePage/> : <NotFound />}
               </AppLayout>
