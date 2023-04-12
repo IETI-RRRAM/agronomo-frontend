@@ -7,9 +7,10 @@ type FormProps = {
     children: React.ReactNode;
     isValid: boolean;
     onSubmit: FormEventHandler;
+    formError?: string;
 };
 
-const Form = ({title, children, onSubmit, isValid, buttonText}: FormProps) => {
+const Form = ({title, children, onSubmit, isValid, buttonText, formError}: FormProps) => {
     return (
         <>
             <div className='form-title'><h1>{title}</h1></div>
@@ -18,6 +19,7 @@ const Form = ({title, children, onSubmit, isValid, buttonText}: FormProps) => {
                     {children}
                 </main>
                 <button className='submit-button' disabled={!isValid}>{buttonText}</button>
+                {formError && <span className="error" role="alert">{formError}</span>}
             </form>
         </>
     )

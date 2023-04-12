@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { postService } from "src/services/postServices";
-import { json } from "react-router-dom";
+import Form from 'components/form/Form';
+import FormItem from 'components/formItem/FormItem';
 import {AuthContext} from "components/contexts/AuthContext";
 
 function LoginPage(){
@@ -60,26 +61,29 @@ function LoginPage(){
             setErrorAuthData({...errorAuthData, error:"The data is incorrect, please check it."})
         }
     }
+
+    const isValidDataForm = () => {
+        return !errorAuthData.error && !!authUser.email && !!authUser.password && !errorAuthData.password && !errorAuthData.email;
+    }
+
     return(
-        <div className="Login">
-            <form className="formLogin" onSubmit={handleSubmit}>
-                <h1>Iniciar sesión</h1>
-                <div className="email">
-                    <label htmlFor="email">Email:</label>
-                    <input type="text" id="email" name="email" value={authUser.email} onChange={handleEmail}/>
-                </div>
-                { errorAuthData.email && <span className="error-warning">{errorAuthData.email}</span>}
+        <Form title="Iniciar sesión" onSubmit={handleSubmit} isValid={isValidDataForm()} buttonText="Iniciar sesión" formError={errorAuthData.error}>
+            <FormItem 
+            title="Email:" 
+            placeHolder="user@example.com" 
+            type="text" 
+            value={authUser.email} 
+            onChagne={handleEmail} 
+            error={errorAuthData.email}/>
 
-                <div className="password">
-                    <label htmlFor="password">Contraseña:</label>
-                    <input type="password" id="password" name="password" value={authUser.password}  onChange={handlePassword}/>
-                </div>
-                {errorAuthData.password && <span className="error-warning">{errorAuthData.password}</span>}
-
-                <button type="submit">Iniciar sesión</button>
-                {errorAuthData.error && <span id="error-submit" className="error-warning">{errorAuthData.error}</span>}
-            </form>
-        </div>
+            <FormItem 
+            title="Contraseña:" 
+            placeHolder="******" 
+            type="password" 
+            value={authUser.password} 
+            onChagne={handlePassword} 
+            error={errorAuthData.password}/>
+        </Form>
     );
 };
 export default LoginPage;

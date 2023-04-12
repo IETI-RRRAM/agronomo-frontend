@@ -21,70 +21,70 @@ function App() {
           <Route index element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
-                {token ? <HomePage/> : <LoginPage/>}
+                {token ? <HomePage/> : <LoginPage/> }
               </AppLayout>
             </Suspense>
           } />
           <Route path="farms/new" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
-                {token ? <HomePage/> : <NewFarm />}
+                {token ? <NewFarm /> : <LoginPage/> }
               </AppLayout>
             </Suspense>
           } />
           <Route path="farms/edit/:id" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
-                {token ? <HomePage/> : <NewFarm />}
+                {token ? <NewFarm /> : <LoginPage/> }
               </AppLayout>
             </Suspense>
           } />
           <Route path="ranches/:id" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
-                {token ? <HomePage/> : <RanchPage />}
+                {token ? <RanchPage /> : <LoginPage/> }
               </AppLayout>
             </Suspense>
           } />
           <Route path="ranches/new" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
-               {token ? <HomePage/> : <NewRanch />}
+               {token ? <NewRanch /> : <LoginPage/> }
               </AppLayout>
             </Suspense>
           } />
           <Route path="ranches/edit/:id" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
-                {token ? <HomePage/> : <NewRanch />}
+                {token ? <NewRanch /> : <LoginPage/> }
               </AppLayout>
             </Suspense>
           } />
           <Route path="lands/:id" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
-                {token ? <HomePage/> : <LandPage />}
+                {token ? <LandPage /> : <LoginPage/> }
               </AppLayout>
             </Suspense>
           } />
           <Route path="lands/new" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
-                {token ? <HomePage/> : <NewLand />}
+                {token ? <NewLand /> : <LoginPage/> }
               </AppLayout>
             </Suspense>
           } />
           <Route path="lands/edit/:id" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
-                {token ? <HomePage/> : <NewLand />}
+                {token ? <NewLand /> : <LoginPage/> }
               </AppLayout>
             </Suspense>
           } />
           <Route path="*" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
-                {token ? <HomePage/> : <NotFound />}
+                <NotFound />
               </AppLayout>
             </Suspense>
           } />

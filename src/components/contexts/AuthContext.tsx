@@ -11,7 +11,8 @@ const AuthContext = createContext<IAuthContext>({
 });
 
 function AuthProvider ({ children }: { children: React.ReactNode }) {
-  const [token, setToken] = useState("");
+  
+  const [token, setToken] = useState(localStorage.getItem("token")||"");
 
   useEffect(() => {
     const handleStorage = () => {
