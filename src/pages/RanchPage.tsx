@@ -4,6 +4,13 @@ import { useParams } from 'react-router-dom';
 const RanchPage = () => {
   const { id } = useParams();
 
+  const dataRanch: {[key: string]: string} =  {
+    Nombre: "Potrero " + id,
+    Propósito: "Cuidado primario pollos",
+    Lugar:  "Cogua",
+    Area: "5 fanegadas",
+  }
+
   return (
     <Collection 
       title={'Tus Ranchos'} 
@@ -15,6 +22,7 @@ const RanchPage = () => {
       editUrl='/ranches/edit/'
       cardUrl='/animals/'
       infoCardTitle='Información del potrero a la que pretenece el rancho'
+      infoCard={dataRanch}
       haveInfo
     />
   )

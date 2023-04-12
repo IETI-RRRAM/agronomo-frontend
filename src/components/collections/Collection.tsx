@@ -17,12 +17,12 @@ type FormProps = {
     cardUrl: string;
     haveInfo?: boolean;
     infoCardTitle?: string;
+    infoCard?: {[key: string]: string};
 };
 
-const Collection = ({title, cardTitle, cardDescription, endpointUrl, iconUrl, addUrl, editUrl, cardUrl, haveInfo, infoCardTitle}: FormProps) => {
+const Collection = ({title, cardTitle, cardDescription, endpointUrl, iconUrl, addUrl, editUrl, cardUrl, haveInfo, infoCardTitle, infoCard}: FormProps) => {
 
-    const [collectionInfo, setCollectionInfo] = useState(
-    );
+    const [collectionInfo, setCollectionInfo] = useState();
     const [itemsCollection, setItemsCollection] = useState([]);
 
 
@@ -34,7 +34,7 @@ const Collection = ({title, cardTitle, cardDescription, endpointUrl, iconUrl, ad
         <div className='container'>
             <div className='collection-title'>
                 <h1>{title}</h1>
-                {haveInfo && <InfoCard cardTitle={infoCardTitle ?? ''} info={collectionInfo}></InfoCard>}
+                {haveInfo && <InfoCard cardTitle={infoCardTitle ?? ''} info={infoCard}></InfoCard>}
             </div>
             <main className='card-group'>
                 {
