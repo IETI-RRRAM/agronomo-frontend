@@ -1,6 +1,6 @@
-import './FormData.css';
-import InfoCard from '../infoCard/InfoCard';
-const FormData = () => {
+import './AnimalCard.css';
+import InfoCard from 'components/infoCard/InfoCard';
+const AnimalInfo = () => {
 
     const dataAnimal: {[key: string]: string} =  {
       name: "Vaquerita",
@@ -45,4 +45,4 @@ const FormData = () => {
         </div>
     )
 }
-export default FormData;
+export default AnimalInfo;
