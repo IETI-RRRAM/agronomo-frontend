@@ -5,7 +5,7 @@ import FormItem from 'components/formItem/FormItem';
 import {AuthContext} from "components/contexts/AuthContext";
 
 function LoginPage(){
-    const BASE_URL = "http://localhost:8080";
+    const BASE_URL = "https://users-rest-service-production-9de5.up.railway.app";
     const [authUser, setAuthUser] = useState({
         email:"",
         password:""
