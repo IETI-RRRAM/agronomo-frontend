@@ -3,6 +3,7 @@ import { useEffect, useState} from 'react';
 import AnimalActions from 'components/animalActions/AnimalActions';
 import InfoCard from 'components/infoCard/InfoCard';
 import HelpButton from 'src/components/buttons/help/HelpButton';
+import Modal from '../modal/modal';
 import getService from 'src/services/getService';
 import './AnimalCard.css';
 
@@ -13,6 +14,7 @@ const AnimalInfo = () => {
     const [animalInfo, setAnimalInfo] = useState({});
     const [selectedButton, setSelectedButton] = useState('General');
     const [cardTitle, setCardTitle] = useState('Detalles Animal');
+    const [openModal, setOpenModal] = useState(true);
 
     useEffect(() => {
       //getService(getUrl()).then((response) => {
@@ -56,6 +58,15 @@ const AnimalInfo = () => {
             <div>
                 <h1 className='title'>Información del Animal</h1>
             </div>
+
+            {/*Prueba de Modal*/}
+            {/*En el siguiente commit se ajustara la información que llevara*/}
+            {openModal && (
+              <Modal>
+                  <InfoCard cardTitle={cardTitle} info={animalInfo}/>
+                  <button onClick={() => setOpenModal(false)}>Salir</button>
+              </Modal> 
+            )}
             
             <div className="informacion-animal">
 
