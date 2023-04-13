@@ -1,3 +1,4 @@
+import AnimalActions from 'components/animalActions/AnimalActions';
 import './AnimalCard.css';
 import InfoCard from 'components/infoCard/InfoCard';
 const AnimalInfo = () => {
@@ -40,8 +41,9 @@ const AnimalInfo = () => {
                 <div className='info-general'>
                   <InfoCard cardTitle='Detalles Animal' info={dataAnimal}/>
                 </div>
-
+                <AnimalActions />
             </div>
+
         </div>
     )
 }

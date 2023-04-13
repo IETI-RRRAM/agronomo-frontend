@@ -91,6 +91,34 @@ function App() {
               </AppLayout>
             </Suspense>
           } />
+          <Route path="animal/:id" element={
+            <Suspense fallback={<div>loading ...</div>}>
+              <AppLayout>
+                <AnimalData />
+              </AppLayout>
+            </Suspense>
+          } />
+          <Route path="animals/:id" element={
+            <Suspense fallback={<div>loading ...</div>}>
+              <AppLayout>
+                <AnimalsPage />
+              </AppLayout>
+            </Suspense>
+          } />
+          <Route path="animals/new" element={
+            <Suspense fallback={<div>loading ...</div>}>
+              <AppLayout>
+                <NewAnimal />
+              </AppLayout>
+            </Suspense>
+          } />
+          <Route path="animals/edit/:id" element={
+            <Suspense fallback={<div>loading ...</div>}>
+              <AppLayout>
+                <NewAnimal />
+              </AppLayout>
+            </Suspense>
+          } />
         </Routes>
       </BrowserRouter>
   );

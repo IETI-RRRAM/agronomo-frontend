@@ -1,0 +1,20 @@
+.action {
+    min-width: 7rem;
+    width: fit-content;
+    border-radius: 1rem;
+    border: transparent;
+    padding: 0.7rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--main-color-gray-dark);
+    box-shadow: 0 0 10px 7px rgb(223, 223, 223);
+}
+.material-symbols-outlined {
+    color: white;
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48
+}
