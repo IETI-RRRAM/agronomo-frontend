@@ -16,3 +16,11 @@
 .info-card-items {
     margin: 0 1rem 1rem 1rem;
 }
+
+.container-objects {
+    margin-left: 2rem;
+}
+.section-animal {
+    width: 100%;
+    font-size: 1.2rem;
+}

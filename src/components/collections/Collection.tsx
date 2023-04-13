@@ -30,6 +30,7 @@ const Collection = ({title, cardTitle, cardDescription, endpointUrl, iconUrl, ad
     useEffect(() => {
         getService(endpointUrl).then((response) => setItemsCollection(response.slice(0, 5)));
     }, []);
+
     return (
         <div className='container'>
             <div className='collection-title'>

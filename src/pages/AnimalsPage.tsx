@@ -8,9 +8,9 @@ const AnimalsPage = () => {
     <Collection 
       title={'Tus Animales'} 
       cardTitle={'Animales'} 
-      cardDescription={'En esta página puedes ver tus animales asociados al rancho, editarlos y poder añadir'}
+      cardDescription={'En esta página puedes ver tus animales asociados al rancho. Puedes añadir nuevos, editar y eliminar los agregados.'}
       endpointUrl='https://jsonplaceholder.typicode.com/posts'
-      iconUrl='/src/assets/fence.svg'
+      iconUrl='/src/assets/vaca.svg'
       addUrl='/animals/new'
       editUrl='/animals/edit/'
       cardUrl='/animal/'

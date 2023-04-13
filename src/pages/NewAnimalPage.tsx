@@ -21,7 +21,7 @@ const NewAnimalPage = () => {
     useEffect(() => {
       if (id) {
         setIsEdit(true);
-        // getService(id) SE DEBE HACER CONSULTA DE ESE RANCHO
+        // getService(id) SE DEBE HACER CONSULTA DE ESE ANIMAL
       }
     }, [])
 
@@ -184,7 +184,6 @@ const NewAnimalPage = () => {
         onChagne={handleWeightChange}
         error={validForm.weight}
     />
-    
     </Form>);
 }
 
