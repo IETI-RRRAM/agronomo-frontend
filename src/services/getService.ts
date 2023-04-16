@@ -1,7 +1,8 @@
-const getService = async (url: string) => {
+const getService = async (url: string, options?: {} | undefined) => {
     return await (
         await fetch(
-          url
+          url,
+          options
         )
       ).json();
 }
