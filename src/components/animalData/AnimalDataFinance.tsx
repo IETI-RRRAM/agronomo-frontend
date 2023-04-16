@@ -9,18 +9,12 @@ interface FormType {
   profitability: undefined | string;
 }
 
-const AnimalDataFinance = () => {
+interface FormProps {
+  id: undefined | string;
+  isEdit: undefined | boolean;
+}
 
-    const [isEdit, setIsEdit] = useState(false);
-
-    let { id } = useParams();
-
-    useEffect(() => {
-      if (id) {
-        setIsEdit(true);
-        // getService(id) SE DEBE HACER CONSULTA DE ESE ANIMAL
-      }
-    }, [])
+const AnimalDataFinance = ({id, isEdit}: FormProps) => {
 
     const [moneyProduced, setMoneyProduced] = useState('');
     const [moneySpent, setMoneySpent] = useState('');
@@ -75,7 +69,7 @@ const AnimalDataFinance = () => {
     )
 
     return (
-    <Form title={isEdit ? 'Edita los datos del animal' : 'Añade un nuevo Animal'} onSubmit={onSubmit} isValid={isValid} buttonText={isEdit ? 'Editar' : 'Crear'}>
+    <Form title={isEdit ? 'Edita los datos Financieros' : 'Añade los datos Financieros'} onSubmit={onSubmit} isValid={isValid} buttonText={isEdit ? 'Editar' : 'Crear'}>
     
     <FormItem 
         title={'Dinero Producido:'}

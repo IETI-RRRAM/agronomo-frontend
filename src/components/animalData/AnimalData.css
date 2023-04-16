@@ -1,0 +1,24 @@
+.component-container {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin-left: 5%
+}
+
+.data-title {
+    display: flex;
+    place-content: center;
+    color:var(--main-color);
+    border-bottom: 2px solid var(--main-color);
+}
+
+.data-button {
+    width: 10rem;
+    margin: 1rem auto;
+    font-size: medium;
+    background-color: var(--main-color);
+    border: 2px solid var(--main-color-dark);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    margin-bottom: 5rem;
+}

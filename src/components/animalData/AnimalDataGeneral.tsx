@@ -1,7 +1,7 @@
 import Form from 'components/form/Form';
 import FormItem from 'components/formItem/FormItem';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useState, useRef } from 'react';
+import SelectItem from '../selectItem/SelectItem';
 
 interface FormType {
   name: undefined | string;
@@ -13,18 +13,19 @@ interface FormType {
   age: undefined | string;
 }
 
-const AnimalDataGeneral = () => {
+interface FormProps {
+  id: undefined | string;
+  isEdit: undefined | boolean;
+}
 
-    const [isEdit, setIsEdit] = useState(false);
+const AnimalDataGeneral = ({id, isEdit}: FormProps) => {
 
-    let { id } = useParams();
 
-    useEffect(() => {
-      if (id) {
-        setIsEdit(true);
-        // getService(id) SE DEBE HACER CONSULTA DE ESE ANIMAL
-      }
-    }, [])
+    const optionsType: string[] = ["Bovino", "Equino", "Pollo", "Conejo"];
+    const optionsGender: string[] = ["Macho", "Hembra"];
+
+    const selectRefTypes = useRef<HTMLSelectElement>(null);
+    const selectRefGender = useRef<HTMLSelectElement>(null);
 
     const [name, setName] = useState('');
     const [type, setType] = useState('');
@@ -68,22 +69,26 @@ const AnimalDataGeneral = () => {
       setName(value);
     }
 
-    const handleTypeChange = (event: any) => {
-      const value = event.target.value;
+    const handleTypeChange = () => {
+      const value = selectRefTypes.current?.value;
       setValidForm({
         ...validForm,
-        type: value.length === 0 ? 'El tipo es obligatorio' : ''
+        type:  ''
       });
-      setType(value);
+      if (value !== undefined) {
+        setType(value.toString());
+      }
     }
 
-    const handleGenderChange = (event: any) => {
-      const value = event.target.value;
+    const handleGenderChange = () => {
+      const value = selectRefTypes.current?.value;
       setValidForm({
         ...validForm,
-        gender: value.length === 0 ? 'El genero es obligatorio' : ''
+        gender: ''
       });
-      setGender(value);
+      if (value !== undefined) {
+        setGender(value.toString());
+      }
     }
 
     const handleStageChange = (event: any) => {
@@ -127,7 +132,7 @@ const AnimalDataGeneral = () => {
     )
 
     return (
-    <Form title={isEdit ? 'Edita los datos del animal' : 'Añade un nuevo Animal'} onSubmit={onSubmit} isValid={isValid} buttonText={isEdit ? 'Editar' : 'Crear'}>
+    <Form title={isEdit ? 'Edita los datos Generales' : 'Añade los datos Generales'} onSubmit={onSubmit} isValid={isValid} buttonText={isEdit ? 'Editar' : 'Crear'}>
     
     <FormItem 
         title={'Nombre:'}
@@ -137,21 +142,19 @@ const AnimalDataGeneral = () => {
         onChagne={handleNameChange}
         error={validForm.name}
     />
-    <FormItem 
-        title={'Tipo:'}
-        placeHolder={'Tipo de Animal'}
-        type={'text'}
-        value={type}
-        onChagne={handleTypeChange}
-        error={validForm.type}
+    <SelectItem 
+      title={'Seleccione el Tipo:'}
+      selectRef={selectRefTypes}
+      onChagne={handleTypeChange}
+      options={optionsType}
+      error={validForm.type}
     />
-    <FormItem 
-        title={'Género:'}
-        placeHolder={'Ingrese el Género'}
-        type={'text'}
-        value={gender}
-        onChagne={handleGenderChange}
-        error={validForm.gender}
+    <SelectItem 
+      title={'Seleccione el Genero:'}
+      selectRef={selectRefGender}
+      onChagne={handleGenderChange}
+      options={optionsGender}
+      error={validForm.gender}
     />
     <FormItem 
         title={'Raza:'}
@@ -162,7 +165,7 @@ const AnimalDataGeneral = () => {
         error={validForm.stage}
     />
     <FormItem 
-        title={'Peso:'}
+        title={'Peso (arrobas):'}
         placeHolder={'Ingrese el peso'}
         type={'text'}
         value={weight}
@@ -178,7 +181,7 @@ const AnimalDataGeneral = () => {
         error={validForm.breed}
     />
     <FormItem 
-        title={'Edad:'}
+        title={'Edad (meses):'}
         placeHolder={'Ingrese la edad'}
         type={'number'}
         value={age}
