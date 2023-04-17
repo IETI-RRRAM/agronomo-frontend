@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import Dropdown from '../dropdown/Dropdown';
 import Table from '../table/Table';
 import ItemButton from '../buttons/item/ItemButton';
+import Modal from '../modal/Modal';
+import FormAddProduct from '../formAddAnimal/FormAddProduct';
+
 interface FormType {
   totalProduction: undefined | string;
 }
@@ -15,22 +18,24 @@ interface FormProps {
 
 const AnimalDataProduction = ({id, isEdit}: FormProps) => {
 
-    //Datos quemados de prueba
-    const data = [
-      { id: 1, name: 'Prueba 1', age: 25 },
-      { id: 2, name: 'Prueba 2', age: 30 },
-      { id: 3, name: 'Prueba 3', age: 35 },
-    ];
-
     const [totalProduction, setTotalProduction] = useState('');
-    const [listProducts, setListProducts] = useState(data); 
-
-    const [openDropdown, setOpenDropdown] = useState(false);
+    const [listProducts, setListProducts] = useState<string[]>([]); 
     const [validForm, setValidForm] = useState<FormType>({
       totalProduction: undefined,
     });
 
-    const onClicDropdown = () => {
+    //Dropdown
+    const [openDropdown, setOpenDropdown] = useState(false);
+    const [listItemsDropdown, setListItemsDropdown] = useState([{}]);
+
+    //Modal
+    const [openModal, setOpenModal] = useState(false);
+
+    const handleClickModal = () => {
+      setOpenModal(value => !value);
+    }
+
+    const onClickDropdown = () => {
       setOpenDropdown(value => !value);
     }
 
@@ -38,17 +43,36 @@ const AnimalDataProduction = ({id, isEdit}: FormProps) => {
       const newList = [...listProducts];
       newList.splice(index, 1);
       setListProducts(newList);
+      setListItemsDropdown(newList);
     };
+
+    const addNewItem = (item: string) => {
+      setOpenModal(false);
+      const newList = [...listProducts];;
+      newList.push(JSON.parse(item));
+      setListProducts(newList);
+      setListItemsDropdown(newList);
+    }
 
     const onSubmit = (event: any): void => {
       const formData = {
+        idAnimal: id,
         productions: listProducts,
         totalProduction: totalProduction,
       };
       event.preventDefault();
+      clearVariable();
       console.log(formData);
-      // serviceAnimals(formData);
     };
+
+    const clearVariable = () => {
+      setTotalProduction('');
+      setListProducts([]);
+      setValidForm({
+        totalProduction: undefined,
+      });
+      setOpenDropdown(false);
+    }
 
     const handleTotalProductionChange = (event: any) => {
       const value = event.target.value;
@@ -59,10 +83,11 @@ const AnimalDataProduction = ({id, isEdit}: FormProps) => {
       setTotalProduction(value);
     }
 
-    const handleClickProducs = () => {
-      setListProducts(data);
+    const handleClickProducs = (event: any): void => {
+      event.preventDefault();
+      setListItemsDropdown(listProducts);
       if (!openDropdown) {
-        onClicDropdown();
+        onClickDropdown();
       }
     }
 
@@ -91,13 +116,27 @@ const AnimalDataProduction = ({id, isEdit}: FormProps) => {
         (openDropdown) && 
         <Dropdown
         title="Lista de Producción"
-        onClicDropdown={onClicDropdown}
+        onClicDropdown={onClickDropdown}
         >
         <Table 
-        listObjects={listProducts}
+        listObjects={listItemsDropdown}
         onDelete={handleDelete}
+        onAdd={handleClickModal}
+        isEdit={true}
         />
         </Dropdown>
+      }
+      {
+        openModal && (
+          <Modal>
+              <Dropdown
+                title='Agregar un Produto'
+                onClicDropdown={handleClickModal}
+              >
+                <FormAddProduct newItem={addNewItem}/>
+              </Dropdown>
+          </Modal>
+        )
       }
       </>
     );

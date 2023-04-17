@@ -4,8 +4,12 @@ import { useEffect, useState } from 'react';
 import Dropdown from '../dropdown/Dropdown';
 import Table from '../table/Table';
 import ItemButton from '../buttons/item/ItemButton';
+import Modal from '../modal/Modal';
+import FormAddTreatments from '../formAddAnimal/FormAddTreatments';
+import FormAddMed from '../formAddAnimal/FormAddMed';
+import FormAddAlert from '../formAddAnimal/FormAddAlert';
 
-interface FormType {
+interface FormTypeGeneral {
   status: undefined | string;
 }
 
@@ -16,115 +20,158 @@ interface FormProps {
 
 const AnimalDataHealth = ({id, isEdit}: FormProps) => {
 
-    //Datos Quemados Para probar
-    const dataMeds = [
-      { id: 1, name: 'Med 1', age: 25 },
-      { id: 2, name: 'Med 2', age: 30 },
-      { id: 3, name: 'Med 3', age: 35 },
-    ];
-    const dataTreatments = [
-      { id: 1, name: 'Treatments 1', age: 25 },
-      { id: 2, name: 'Treatments 2', age: 30 },
-      { id: 3, name: 'Treatments 3', age: 35 },
-    ];
-    const dataAlerts = [
-      { id: 1, name: 'alerts 1', age: 25 },
-      { id: 2, name: 'alerts 2', age: 30 },
-      { id: 3, name: 'alerts 3', age: 35 },
-    ];
-
+    //Data General
     const [status, setStatus] = useState('');
-    const [listTreatments, setListTreatments] = useState(dataTreatments);
-    const [listMeds, setListMeds] = useState(dataMeds);
-    const [listAlerts, setListAlerts] = useState(dataAlerts);
+    const [listTreatments, setListTreatments] = useState<string[]>([]);
+    const [listMeds, setListMeds] = useState<string[]>([]);
+    const [listAlerts, setListAlerts] = useState<string[]>([]);
 
+    //Dropdown Table
     const [openDropdown, setOpenDropdown] = useState(false);
     const [optionDropdown, setOptionDropdown] = useState('');
     const [titleDropdown, setTitleDropdown] = useState('');
-    const [listItemsDropdown, setListItemsDropdown] = useState(dataTreatments);
+    const [listItemsDropdown, setListItemsDropdown] = useState([{}]);
 
-    const [validForm, setValidForm] = useState<FormType>({
+    //Valid Forms
+    const [validFormGeneral, setValidFormGeneral] = useState<FormTypeGeneral>({
       status: undefined,
     });
 
-    const onClicDropdown = () => {
+    //Modal 
+    const [openModal, setOpenModal] = useState(false);
+
+    const handleCloseModal = () => {
+      setOpenModal(false);
+    }
+
+    const handleOpenModal = () => {
+      setOpenModal(true);
+    }
+
+    const onClickDropdown = () => {
       setOpenDropdown(value => !value);
     }
 
     const handleDelete = (index: number) => {
       let newList;
-      if (optionDropdown == "treatments") newList = [...listTreatments];
-      else if (optionDropdown == "meds") newList = [...listMeds];
-      else newList = [...listAlerts];
+      if (optionDropdown == "treatments") {
+        newList = [...listTreatments];
+      }
+      else if (optionDropdown == "meds") {
+        newList = [...listMeds];
+      }
+      else {
+        newList = [...listAlerts];
+      }
       newList.splice(index, 1);
-      if (optionDropdown == "treatments") setListTreatments(newList);
-      else if (optionDropdown == "meds") setListMeds(newList);
-      else setListAlerts(newList);
+      if (optionDropdown == "treatments") {
+        setListTreatments(newList);
+      }
+      else if (optionDropdown == "meds") {
+        setListMeds(newList);
+      }
+      else {
+        setListAlerts(newList);
+      }
       setListItemsDropdown(newList);
     };
 
+    const addNewItem = (item: string) => {
+      setOpenModal(false);
+      let newList;
+      if (optionDropdown == "meds") {
+        newList = [...listMeds];
+        newList.push(JSON.parse(item));
+        setListMeds(newList);
+      } else if (optionDropdown == "treatments") {
+        newList = [...listTreatments];
+        newList.push(JSON.parse(item));
+        setListTreatments(newList);
+      } else {
+        newList = [...listAlerts];
+        newList.push(JSON.parse(item));
+        setListAlerts(newList);
+      }
+      setListItemsDropdown(newList);
+    }
+
     const onSubmit = (event: any): void => {
       const formData = {
+        idAnimal: id,
         status: status,
         treatments: listTreatments,
         meds: listMeds,
         alerts: listAlerts,
       };
       event.preventDefault();
+      clearVariable();
       console.log(formData);
-      // serviceAnimals(formData);
     };
+
+    const clearVariable = () => {
+      setStatus('');
+      setListTreatments([]);
+      setListMeds([]);
+      setListAlerts([]);
+      setValidFormGeneral({
+        status: undefined,
+      });
+      setOpenDropdown(false);
+    }
 
     const handleStatusChange = (event: any) => {
       const value = event.target.value;
-      setValidForm({
-        ...validForm,
+      setValidFormGeneral({
+        ...validFormGeneral,
         status: value.length === 0 ? 'El estado del animal es obligatorio' : ''
       });
       setStatus(value);
     }
 
-    const handleClickTreatments = () => {
+    const handleClickTreatments = (event: any): void => {
+      event.preventDefault();
       setTitleDropdown('Lista de Tratamientos');
-      setListItemsDropdown(dataTreatments);
+      setListItemsDropdown(listTreatments);
       setOptionDropdown("treatments");
       if (!openDropdown) {
-        onClicDropdown();
+        onClickDropdown();
       }
     }
 
-    const handleClickMeds = () => {
+    const handleClickMeds = (event: any): void => {
+      event.preventDefault();
       setTitleDropdown('Lista de Medicamentos');
-      setListItemsDropdown(dataMeds);
+      setListItemsDropdown(listMeds);
       setOptionDropdown("meds");
       if (!openDropdown) {
-        onClicDropdown();
+        onClickDropdown();
       }
     }
 
-    const handleClickAlerts = () => {
+    const handleClickAlerts = (event: any): void => {
+      event.preventDefault();
       setTitleDropdown('Lista de Alertas');
-      setListItemsDropdown(dataAlerts);
+      setListItemsDropdown(listAlerts);
       setOptionDropdown("alerts");
       if (!openDropdown) {
-        onClicDropdown();
+        onClickDropdown();
       }
     }
 
-    const isValid = Object.keys(validForm).every(
-      (key) => validForm[key as keyof typeof validForm] === ''
+    const isValidGeneral = Object.keys(validFormGeneral).every(
+      (key) => validFormGeneral[key as keyof typeof validFormGeneral] === ''
     )
 
     return (
     <>
-      <Form title={isEdit ? 'Edita los datos de Salud' : 'Añade los datos de Salud'} onSubmit={onSubmit} isValid={isValid} buttonText={isEdit ? 'Editar' : 'Crear'}>
+      <Form title={isEdit ? 'Edita los datos de Salud' : 'Añade los datos de Salud'} onSubmit={onSubmit} isValid={isValidGeneral} buttonText={isEdit ? 'Editar' : 'Crear'}>
       <FormItem 
           title={'Estado Animal:'}
           placeHolder={'Ingrese el estado del animal'}
           type={'text'}
           value={status}
           onChagne={handleStatusChange}
-          error={validForm.status}
+          error={validFormGeneral.status}
       />
       <ItemButton 
           title={'Tratamientos:'} 
@@ -146,14 +193,47 @@ const AnimalDataHealth = ({id, isEdit}: FormProps) => {
         (openDropdown) && 
         <Dropdown
         title={titleDropdown}
-        onClicDropdown={onClicDropdown}
+        onClicDropdown={onClickDropdown}
         >
         <Table 
         listObjects={listItemsDropdown}
+        isEdit={true}
         onDelete={handleDelete}
+        onAdd={handleOpenModal}
         />
         </Dropdown>
       }
+        {openModal && (
+            <Modal>
+              {
+                (optionDropdown == "treatments") &&
+                <Dropdown
+                title='Agregar un Tratamiento'
+                onClicDropdown={handleCloseModal}
+                >
+                <FormAddTreatments newItem={addNewItem}/>
+                </Dropdown>     
+              }
+              {
+                (optionDropdown == "meds") &&
+                <Dropdown
+                title='Agregar un Medicamento'
+                onClicDropdown={handleCloseModal}
+                >
+                <FormAddMed newItem={addNewItem}/>
+                </Dropdown>     
+              }
+              {
+                (optionDropdown == "alerts") &&
+                <Dropdown
+                title='Agregar una Alerta'
+                onClicDropdown={handleCloseModal}
+                >
+                <FormAddAlert newItem={addNewItem}/>
+                </Dropdown>     
+              }
+            </Modal> 
+        )}
     </>
     );
 

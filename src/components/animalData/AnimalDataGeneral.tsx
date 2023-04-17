@@ -20,10 +20,8 @@ interface FormProps {
 
 const AnimalDataGeneral = ({id, isEdit}: FormProps) => {
 
-
     const optionsType: string[] = ["Bovino", "Equino", "Pollo", "Conejo"];
     const optionsGender: string[] = ["Macho", "Hembra"];
-
     const selectRefTypes = useRef<HTMLSelectElement>(null);
     const selectRefGender = useRef<HTMLSelectElement>(null);
 
@@ -47,6 +45,7 @@ const AnimalDataGeneral = ({id, isEdit}: FormProps) => {
 
     const onSubmit = (event: any): void => {
       const formData = {
+        idRanch: 1,
         name: name,
         type: type,
         gender: gender,
@@ -56,9 +55,28 @@ const AnimalDataGeneral = ({id, isEdit}: FormProps) => {
         age: age,
       };
       event.preventDefault();
+      clearVariable();
       console.log(formData);
-      // serviceAnimals(formData);
     };
+
+    const clearVariable = () => {
+      setName('');
+      setType('');
+      setGender('');
+      setStage('');
+      setWeight('');
+      setBreed('');
+      setAge('');
+      setValidForm({
+        name: undefined,
+        type: undefined,
+        gender: undefined,
+        stage: undefined,
+        weight: undefined,
+        breed: undefined,
+        age: undefined,
+      });
+    }
 
     const handleNameChange = (event: any) => {
       const value = event.target.value;

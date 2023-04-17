@@ -14,7 +14,9 @@ const Modal = ({children}: AppProps) => {
 
     return ReactDOM.createPortal(
         <div className="ModalBackground">
-            {children}
+            <div className='content-modal'>
+                {children}
+            </div>
         </div>,
         document.getElementById('modal')!
     );

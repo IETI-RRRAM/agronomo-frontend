@@ -22,3 +22,7 @@
     padding: 0.5rem 1rem;
     margin-bottom: 5rem;
 }
+
+.data-button:hover {
+    cursor: pointer;
+}

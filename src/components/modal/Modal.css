@@ -9,3 +9,10 @@
     justify-content: center;
     align-items: center;
 }
+
+.content-modal {
+    max-height: 90%; 
+    overflow-y: auto;
+    background-color: white;
+    border-radius: 1rem;
+}

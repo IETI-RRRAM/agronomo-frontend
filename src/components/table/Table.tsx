@@ -1,13 +1,20 @@
 import './Table.css';
 
 type FormProps = {
+
     listObjects?: { [key: string]: any}[];
-    onDelete: (index: number) => void;
+    isEdit: boolean;
+    onDelete?: (index: number) => void;
+    onAdd?: () => void;
 };
 
-const Table = ({listObjects = [], onDelete}: FormProps) => {
+const Table = ({listObjects = [], isEdit, onDelete, onAdd}: FormProps) => {
 
-    const columns = (listObjects.length != 0)?Object.keys(listObjects[0]):["Datos"];
+    const columns = (listObjects.length != 0)?Object.keys(listObjects[0]):["Agrega Datos"];
+
+    const handleOnDelete = (index: number) => {
+      if (onDelete) onDelete(index);
+    }
 
     return (
         <div className="table-container">
@@ -17,7 +24,9 @@ const Table = ({listObjects = [], onDelete}: FormProps) => {
                 {columns.map((column) => (
                   <th key={column}>{column}</th>
                 ))}
-                <th></th>
+                {
+                (isEdit && <th></th>)
+                } 
               </tr>
             </thead>
             <tbody>
@@ -26,15 +35,24 @@ const Table = ({listObjects = [], onDelete}: FormProps) => {
                   {columns.map((column, index) => (
                     <td key={index}>{row[column]}</td>
                   ))}
-                  <td>
-                    <span onClick={() => onDelete(index)} className="material-symbols-outlined boton-delete">
+                  {
+                    (isEdit &&
+                    <td>
+                    <span onClick={() => handleOnDelete(index)} className="material-symbols-outlined boton-delete">
                         delete
                     </span>
-                  </td>
+                    </td>)
+                  }
                 </tr>
               ))}
             </tbody>
           </table>
+          {
+            (isEdit &&
+            <span className="material-symbols-outlined boton-add" onClick={onAdd}>
+            add_circle
+            </span>)
+          }
         </div>
       );
 }

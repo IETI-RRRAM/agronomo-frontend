@@ -19,7 +19,7 @@ const Dropdown = ({title, children, onClicDropdown}: FormProps) => {
             <main>
                 {children}
             </main>
-        </div>
+        </div>   
     )
 }
 export default Dropdown;

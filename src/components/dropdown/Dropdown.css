@@ -10,12 +10,18 @@
 
 .dropdown-header {
     display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1rem;
+    align-items: center;
     font-size: 0.6rem;
     color:var(--main-color);
 }
 
+
 .dropdown-title {
     text-align: center;
+    margin:0px auto;
 }
 
 .material-symbols-outlined.boton-close {

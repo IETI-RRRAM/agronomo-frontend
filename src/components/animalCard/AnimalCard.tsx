@@ -3,44 +3,15 @@ import { useEffect, useState} from 'react';
 import AnimalActions from 'components/animalActions/AnimalActions';
 import InfoCard from 'components/infoCard/InfoCard';
 import HelpButton from 'src/components/buttons/help/HelpButton';
-import Modal from '../modal/modal';
+import Modal from '../modal/Modal';
 import getService from 'src/services/getService';
+import Dropdown from '../dropdown/Dropdown';
 import './AnimalCard.css';
 
 const AnimalInfo = () => {
 
-    const { id } = useParams();
-    const [nameCow, setNameCow] = useState('Vaquerita');
-    const [animalInfo, setAnimalInfo] = useState({});
-    const [selectedButton, setSelectedButton] = useState('General');
-    const [cardTitle, setCardTitle] = useState('Detalles Animal');
-    const [openModal, setOpenModal] = useState(true);
-
-    useEffect(() => {
-      //getService(getUrl()).then((response) => {
-      //  setAnimalInfo(response.json());
-      //  if (selectedButton == 'General') setNameCow(response.json().name);
-      //});
-      setCardTitle(selectedButton);
-      //Utilizamos data general para probar
-      setAnimalInfo(dataGeneral);
-    }, [selectedButton])
-
-    const getUrl = () => {
-        if (selectedButton == 'Salud') {
-          return "url-Salud";
-        } else if (selectedButton == 'Producción') {
-          return "url-Producción";
-        } else if (selectedButton == 'Reproducción') {
-          return "url-Reproducción";
-        } else if (selectedButton == 'Finanzas') {
-          return "url-Finanzas";
-        } else {
-          return "url-General";
-        }
-    }
-
-    const dataGeneral = {
+    //Datos Quemados
+    const dataGeneralCow= {
       id: "1",
       idRanch: "12",
       name: "Vaquerita",
@@ -49,38 +20,101 @@ const AnimalInfo = () => {
       stage: "Engorde",
       weight: "100 kilos",
       breed: "Normando",
-      age: "18 meses"
+      age: "18 meses",
     }
 
+    const dataGeneralNew = {
+      id: "1",
+      idRanch: "12",
+      name: "Vaquerita",
+      lista1: [
+      {"name": "camilo", "edad": "12", "email": "yesid@mail.com"},
+      {"name": "camilo", "edad": "12", "email": "yesid@mail.com"}],
+      lista2: [
+      {"name": "camilo", "edad": "12", "email": "yesid@mail.com"},
+      {"name": "camilo", "edad": "12", "email": "yesid@mail.com"}],
+      object: {"name": "camilo", "edad": "12", "email": "yesid@mail.com"},
+    }
+
+    const { id } = useParams();
+    const [nameAnimal, setNameCow] = useState('Vaquerita');
+    const [imageAnimal, setImageAnimal] = useState('https://media.istockphoto.com/id/1205758678/es/foto/cabeza-de-vaca-blanca-y-negra-madura-aspecto-suave-nariz-rosa-delante-de-un-cielo-azul.jpg?b=1&s=612x612&w=0&k=20&c=Ra0ApF1-ZSF8XuR8g2eNy2UNAKAzj0bdsS60HxTviWI=');
+    const [openModal, setOpenModal] = useState(false);
+
+    const [optionData, setOptionData] = useState('');
+    const [listOptionData, setListOptionData] = useState<object>([]);
+
+    const [dataGeneral, setDataGeneral] = useState<object>([]);
+    const [dataFinance, setDataFinance] = useState<object>([]);
+    const [dataProduction, setDataProduction] = useState<object>([]);
+    const [dataReproduction, setDataReproduction] = useState<object>([]);
+    const [dataHealth, setDataHealth] = useState<object>([]);
+
+    useEffect(() => {
+      //getService("url-General").then((response) => {
+      //  setDataGeneral(response.json());
+      //});
+      //getService("url-Finance").then((response) => {
+      //  setDataFinance(response.json());
+      //});
+      //getService("url-Production").then((response) => {
+      //  setDataProduction(response.json());
+      //});
+      //getService("url-Reproduction").then((response) => {
+      //  setDataReproduction(response.json());
+      //});
+      //getService("url-Health").then((response) => {
+      //  setDataHealth(response.json());
+      //});
+    }, [])
+
+    const handleClickButton = (option: string) => {
+      setOptionData(option);
+      if (option == 'Información Salud') setListOptionData(dataGeneralNew);
+      else if (option == 'Información Producción') setListOptionData(dataGeneralNew);
+      else if (option == 'Información Reproducción') setListOptionData(dataGeneralNew);
+      else if (option == 'Información Finanzas') setListOptionData(dataGeneralNew);
+      else setListOptionData(dataGeneralCow);
+      handleClickModal();
+    } 
+
+    const handleClickModal = () => {
+      setOpenModal((value) => !value);
+    } 
+
     return (
-        <div className="contenedor">
+        <div className="animalCard-container">
 
             <div>
-                <h1 className='title'>Información del Animal</h1>
+                <h1 className='animalCard-title'>Información del Animal</h1>
             </div>
-
-            {/*Prueba de Modal*/}
-            {/*En el siguiente commit se ajustara la información que llevara*/}
-            {openModal && (
-              <Modal>
-                  <InfoCard cardTitle={cardTitle} info={animalInfo}/>
-                  <button onClick={() => setOpenModal(false)}>Salir</button>
-              </Modal> 
-            )}
             
-            <div className="informacion-animal">
+            <div className="information-animal">
 
-                <div className='info-principal'>
-                  <h2 className='name-animal'>{nameCow}</h2>
-                  <img className='image-animal' src="https://media.istockphoto.com/id/1205758678/es/foto/cabeza-de-vaca-blanca-y-negra-madura-aspecto-suave-nariz-rosa-delante-de-un-cielo-azul.jpg?b=1&s=612x612&w=0&k=20&c=Ra0ApF1-ZSF8XuR8g2eNy2UNAKAzj0bdsS60HxTviWI=" alt="Animal" />
+                <div className='info-main'>
+                  <h2 className='name-animal'>{nameAnimal}</h2>
+                  <img className='image-animal' src={imageAnimal} alt="Animal" />
+                  <AnimalActions handleClick={handleClickButton} />
                 </div>
                 
                 <div className='info-general'>
-                  <InfoCard cardTitle={cardTitle} info={animalInfo}/>
+                  <InfoCard cardTitle="Información General" info={dataGeneralCow}/>
                 </div>
                 
-                <AnimalActions changeSection={setSelectedButton}/>
             </div>
+
+            {openModal && (
+              <Modal>
+                {
+                  <Dropdown
+                    title="Ver Datos"
+                    onClicDropdown={handleClickModal}
+                    >
+                    <InfoCard cardTitle={optionData} info={listOptionData}/>
+                  </Dropdown>
+                }
+              </Modal> 
+            )}
 
             <HelpButton title="Detalles Animal" description="En esta sección encontraras toda la información del Animal, Datos generales, producción, reproducción, finanzas y salud." />
         </div>

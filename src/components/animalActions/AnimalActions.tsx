@@ -1,38 +1,32 @@
 import ActionButton from 'components/buttons/actions/ActionButton';
-import { useState } from "react";
 import './AnimalActions.css';
 
 type FormProps = {
-    changeSection: React.Dispatch<React.SetStateAction<string>>;
+    handleClick: (option: string) => void;
 };
 
-const AnimalActions = ({changeSection}: FormProps) => {
-
-    const handleClickButton = (value: string) => {
-        changeSection(value);
-    }
+const AnimalActions = ({handleClick}: FormProps) => {
 
     return (
         <nav className='buttons-container'>
 
-            <ActionButton click={() => handleClickButton('Salud')} icon={
-                <span className="material-symbols-outlined">
+            <ActionButton click={() => handleClick('Información Salud')} icon={
+                <span className="material-symbols-outlined icon-actions">
                     favorite
                 </span>
             } text='Salud'/>
-
-            <ActionButton click={() => handleClickButton('Producción')} icon={
-                <span className="material-symbols-outlined">
+            <ActionButton click={() => handleClick('Información Producción')} icon={
+                <span className="material-symbols-outlined icon-actions">
                 monitoring
                 </span>
             } text='Producción' />
-            <ActionButton click={() => handleClickButton('Reproducción')} icon={
-                <span className="material-symbols-outlined">
+            <ActionButton click={() => handleClick('Información Reproducción')} icon={
+                <span className="material-symbols-outlined icon-actions">
                 monitor_heart
                 </span>
             } text='Reproducción' />
-            <ActionButton click={() => handleClickButton('Finanzas')} icon={
-                <span className="material-symbols-outlined">
+            <ActionButton click={() => handleClick('Información Finanzas')} icon={
+                <span className="material-symbols-outlined icon-actions">
                 request_quote
                 </span>
             } text='Finanzas' />

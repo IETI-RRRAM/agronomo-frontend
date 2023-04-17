@@ -1,3 +1,7 @@
+import Dropdown from '../dropdown/Dropdown';
+import Table from '../table/Table';
+import { useState } from 'react';
+
 import './InfoCard.css'
 
 type InfoCardType = {
@@ -7,66 +11,64 @@ type InfoCardType = {
 
 const InfoCard = ({cardTitle, info = {}}: InfoCardType) => {
 
+    const [openDropdown, setOpenDropdown] = useState(false);
+    const [listDropdown, setListDropdown] = useState([{}]);
+    const [titleDropdown, setTitleDropdown] = useState('Data');
+
+    const onClicDropdown = (key: string, data: string[]) => {
+        if (!Array.isArray(data)) {
+            setListDropdown([data]);
+        } else {
+            setListDropdown(data);
+        }
+        if (!openDropdown) {
+            setOpenDropdown(true);
+        }
+        setTitleDropdown(key.charAt(0).toUpperCase() + key.slice(1));
+    }
+
+    const closeDropdown = () => {
+        setOpenDropdown(false);
+    }
+
     return (
+        <>
         <div className='info-card'>
             <h3 className='info-card-title'>{cardTitle}</h3>
             <ul className='info-card-items'>                
                 {
                     Object.keys(info).map((infoKey, key) => {
-                        //Si es un String
-                        if (typeof(info[infoKey]) === "string") {
+                        if (typeof(info[infoKey]) === "object") {
+                            return (
+                                <li key={key} className='info-card-item'>
+                                    <p><b>{infoKey}:</b> <button className='button-table' onClick={() => onClicDropdown(infoKey, info[infoKey])}>Ver</button></p>
+                                </li>
+                            );
+                        } else  {
                             return (
                                 <li key={key} className='info-card-item'>
                                     <p><b>{infoKey}:</b> {info[infoKey]} </p>
                                 </li>
                             )
-                        
-                        //Si es un arreglo
-                        } else if (Array.isArray(info[infoKey])) {
-                                return (
-                                    <div className='container-objects'>
-                                        <h1 className='section-animal'>{infoKey}</h1>
-                                        {
-                                            info[infoKey].map((obj: object, index: number) => {
-                                                return (
-                                                    <div className='container-objects'>
-                                                        <h1 className='section-animal'>{infoKey} {index+1}</h1>
-                                                    {
-                                                        Object.keys(obj).map((infoObj, keyIndex) => {
-                                                            return (
-                                                                <li key={keyIndex} className='info-card-item'>
-                                                                    <p><b>{infoObj}:</b> {info[infoKey][infoObj]} </p>
-                                                                </li>
-                                                            );
-                                                        })
-                                                    }
-                                                    </div>
-                                                );
-                                            })
-                                        } 
-                                    </div>
-                                );
-                        //Si es un Objecto
-                        } else if (typeof(info[infoKey]) === "object") {
-                                return (
-                                    <div className='container-objects'>
-                                        <h1 className='section-animal'>{infoKey}</h1>
-                                    {
-                                        Object.keys(info[infoKey]).map((infoObj, keyIndex) => {
-                                            return (
-                                                <li key={keyIndex} className='info-card-item'>
-                                                    <p><b>{infoObj}:</b> {info[infoKey][infoObj]} </p>
-                                                </li>
-                                            );
-                                        })
-                                    }
-                                    </div>
-                                );
-                        }
-                    } )
+                        } 
+                    })
                 }
             </ul>
         </div>
+        {
+            (openDropdown) && 
+            <Dropdown
+            title={titleDropdown}
+            onClicDropdown={closeDropdown}
+            >
+            <Table 
+            listObjects={listDropdown}
+            isEdit={false}
+            />
+            </Dropdown>
+        }
+        </>
+        
     )
 }
 export default InfoCard;

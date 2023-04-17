@@ -25,7 +25,7 @@ tr:nth-child(even){
 }
 
 tr:hover td{
-	background-color: var(--main-color-dark);;
+	background-color: var(--main-color-dark);
 	color: white;
 }
 
@@ -37,5 +37,18 @@ tr:hover td{
     text-decoration: underline;
     cursor: pointer;
 }
-  
+
+.material-symbols-outlined.boton-add {
+	color: var(--main-color);
+	font-size: 2rem;
+	display: flex;
+	justify-content: center;
+	margin-top: 1rem;
+}
+
+.boton-add:hover {
+    cursor: pointer;
+	text-decoration: underline;
+}
+
 

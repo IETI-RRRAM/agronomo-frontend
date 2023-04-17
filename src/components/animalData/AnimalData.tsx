@@ -3,7 +3,7 @@ import AnimalDataGeneral from 'src/components/animalData/AnimalDataGeneral';
 import AnimalDataHealth from 'src/components/animalData/AnimalDataHealth';
 import AnimalDataProduction from 'src/components/animalData/AnimalDataProduction';
 import AnimalDataReproduction from 'src/components/animalData/AnimalDataReproduction';
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AnimalData.css';
 
 interface FormProps {
@@ -14,12 +14,7 @@ interface FormProps {
 const AnimalData = ({id, isEdit}: FormProps) => {
 
     const componentes = [AnimalDataGeneral, AnimalDataFinance, AnimalDataHealth, AnimalDataProduction, AnimalDataReproduction];
-    
-    const [isValid, setIsValid] = React.useState(false);
-
-    const handleClickButton = () => {
-      console.log("Puede Enviar");
-    }
+    const navigate = useNavigate();
 
     return (
 
@@ -33,7 +28,7 @@ const AnimalData = ({id, isEdit}: FormProps) => {
           </div>
         ))}
 
-        <button onClick={handleClickButton} className='data-button' disabled={!isValid}>Enviar</button>
+        <button onClick={() => navigate(-1)} className='data-button'>Aceptar</button>
     </div>
 
     );

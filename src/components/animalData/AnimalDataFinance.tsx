@@ -28,14 +28,26 @@ const AnimalDataFinance = ({id, isEdit}: FormProps) => {
 
     const onSubmit = (event: any): void => {
       const formData = {
+        idAnimal: id,
         moneyProduced: moneyProduced,
         moneySpent: moneySpent,
         profitability: profitability,
       };
       event.preventDefault();
       console.log(formData);
-      // serviceAnimals(formData);
+      clearVariable();
     };
+
+    const clearVariable = () => {
+      setMoneyProduced('');
+      setMoneySpent('');
+      setProfitability('');
+      setValidForm({
+        moneyProduced: undefined,
+        moneySpent: undefined,
+        profitability: undefined,
+      });
+    }
 
     const handleMoneyProducedChange = (event: any) => {
       const value = event.target.value;

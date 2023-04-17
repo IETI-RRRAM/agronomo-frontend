@@ -9,6 +9,7 @@
     align-items: center;
     background-color: var(--main-color-gray-dark);
     box-shadow: 0 0 10px 7px rgb(223, 223, 223);
+    margin: 0.7rem;
 }
 .material-symbols-outlined {
     color: white;

@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import ItemButton from '../buttons/item/ItemButton';
 import Dropdown from '../dropdown/Dropdown';
 import Table from '../table/Table';
+import Modal from '../modal/Modal';
+import FormAddBirth from '../formAddAnimal/FormAddBirth';
+import FormAddLastHeats from '../formAddAnimal/FormAddLastHeats';
 
 interface FormType {
   status: undefined | string;
@@ -19,24 +22,17 @@ interface FormProps {
 
 const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
 
-    //Datos quemados de prueba
-    const data = [
-      { id: 1, name: 'Prueba 1', age: 25 },
-      { id: 2, name: 'Prueba 2', age: 30 },
-      { id: 3, name: 'Prueba 3', age: 35 },
-    ];
-
     const [status, setStatus] = useState('');
     const [partner, setPartner] = useState('');
     const [nextHeat, setNextHeat] = useState('');
     const [cycleDuration, setCicleDuration] = useState('');
-    const [listBirths, setListBirths] = useState(data);
-    const [listLastHeats, setListLastHeats] = useState(data);
+    const [listBirths, setListBirths] = useState<string[]>([]);
+    const [listLastHeats, setListLastHeats] = useState<string[]>([]);
 
     const [openDropdown, setOpenDropdown] = useState(false);
     const [optionDropdown, setOptionDropdown] = useState('');
     const [titleDropdown, setTitleDropdown] = useState('');
-    const [listItemsDropdown, setListItemsDropdown] = useState(data);
+    const [listItemsDropdown, setListItemsDropdown] = useState([{}]);
 
     const [validForm, setValidForm] = useState<FormType>({
         status: undefined,
@@ -45,7 +41,14 @@ const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
         cycleDuration: undefined,
     });
 
-    const onClicDropdown = () => {
+    //Modal
+    const [openModal, setOpenModal] = useState(false);
+    const handleClickModal = () => {
+      setOpenModal(value => !value);
+    }
+
+    //Dropdown
+    const onClickDropdown = () => {
       setOpenDropdown(value => !value);
     }
 
@@ -59,8 +62,24 @@ const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
       setListItemsDropdown(newList);
     };
 
+    const addNewItem = (item: string) => {
+      setOpenModal(false);
+      let newList;
+      if (optionDropdown == "births") {
+        newList = [...listBirths];
+        newList.push(JSON.parse(item));
+        setListBirths(newList);
+      } else {
+        newList = [...listLastHeats];
+        newList.push(JSON.parse(item));
+        setListLastHeats(newList);
+      }
+      setListItemsDropdown(newList);
+    } 
+
     const onSubmit = (event: any): void => {
       const formData = {
+        idAnimal: id,
         births: listBirths,
         status: status,
         partner: partner,
@@ -69,9 +88,25 @@ const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
         cycleDuration: cycleDuration,
       };
       event.preventDefault();
+      clearVariable();
       console.log(formData);
-      // serviceAnimals(formData);
     };
+
+    const clearVariable = () => {
+      setStatus('');
+      setPartner('');
+      setNextHeat('');
+      setCicleDuration('');
+      setListBirths([]);
+      setListLastHeats([]);
+      setValidForm({
+        status: undefined,
+        partner: undefined,
+        nextHeat: undefined,
+        cycleDuration: undefined,
+      });
+      setOpenDropdown(false);
+    }
 
     const handleStatusChange = (event: any) => {
       const value = event.target.value;
@@ -109,21 +144,23 @@ const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
         setCicleDuration(value);
     }
 
-    const handleClickBirths = () => {
+    const handleClickBirths = (event: any): void => {
+      event.preventDefault();
       setTitleDropdown('Lista de Nacimientos');
       setListItemsDropdown(listBirths);
       setOptionDropdown("births");
       if (!openDropdown) {
-        onClicDropdown();
+        onClickDropdown();
       }
     }
 
-    const handleClickListLastHeats = () => {
+    const handleClickListLastHeats = (event: any): void => {
+      event.preventDefault();
       setTitleDropdown('Lista de Ultimos Calores');
       setListItemsDropdown(listLastHeats);
       setOptionDropdown("lastHeats");
       if (!openDropdown) {
-        onClicDropdown();
+        onClickDropdown();
       }
     }
 
@@ -155,7 +192,7 @@ const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
           title={'Siguiente Calor:'}
           placeHolder={'Ingrese el siguiente calor del animal'}
           type={'date'}
-          value={status}
+          value={nextHeat}
           onChagne={handleNextHeatChange}
           error={validForm.nextHeat}
       />
@@ -163,7 +200,7 @@ const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
           title={'Ciclo de Duración:'}
           placeHolder={'Ingrese el ciclo de duración'}
           type={'number'}
-          value={status}
+          value={cycleDuration}
           onChagne={handleCycleDurationChange}
           error={validForm.cycleDuration}
       />
@@ -182,13 +219,39 @@ const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
         (openDropdown) && 
         <Dropdown
         title={titleDropdown}
-        onClicDropdown={onClicDropdown}
+        onClicDropdown={onClickDropdown}
         >
         <Table 
         listObjects={listItemsDropdown}
         onDelete={handleDelete}
+        onAdd={handleClickModal}
+        isEdit={true}
         />
         </Dropdown>
+      }
+      {
+        openModal && (
+          <Modal>
+              {
+              (optionDropdown == "births") &&
+              <Dropdown
+                title='Agregar un Nacimiento'
+                onClicDropdown={handleClickModal}
+              >
+              <FormAddBirth newItem={addNewItem}/>
+              </Dropdown>
+              }
+              {
+              (optionDropdown == "lastHeats") &&
+              <Dropdown
+                title='Agregar una Fecha'
+                onClicDropdown={handleClickModal}
+              >
+              <FormAddLastHeats newItem={addNewItem}/>
+              </Dropdown>
+              }
+          </Modal>
+        )
       }
       </>
     );
