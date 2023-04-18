@@ -49,7 +49,7 @@ function App() {
               </AppLayout>
             </Suspense>
           } />
-          <Route path="ranches/new" element={
+          <Route path="ranches/new/:id" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
                {token ? <NewRanch /> : <LoginPage/> }
@@ -70,7 +70,7 @@ function App() {
               </AppLayout>
             </Suspense>
           } />
-          <Route path="lands/new" element={
+          <Route path="lands/new/:id" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
                 {token ? <NewLand /> : <LoginPage/> }

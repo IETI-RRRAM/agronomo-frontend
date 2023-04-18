@@ -2,6 +2,7 @@ import Form from 'components/form/Form';
 import FormItem from 'components/formItem/FormItem';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { postService } from 'src/services/postServices';
 
 interface FormType {
   location: undefined | string;
@@ -14,6 +15,7 @@ const NewLandPage = () => {
     const [isEdit, setIsEdit] = useState(false);
 
     let { id } = useParams();
+
     useEffect(() => {
       if (id) {
         setIsEdit(true);
@@ -35,14 +37,15 @@ const NewLandPage = () => {
 
     const onSubmit = (event: any): void => {
       const formData = {
+        farmId: id,
+        imageUrl: "",
         name: name,
         location: location,
         area: Number(area),
         purpose: purpose
       };
       event.preventDefault();
-      console.log(formData);
-      // serviceRanch(formData);
+      postService(`${import.meta.env.VITE_BASE_URL_FARM}v1/land`, formData);
     };
 
     const handleNameChange = (event: any) => {
@@ -103,7 +106,7 @@ const NewLandPage = () => {
     />
     <FormItem 
         title={'Proposito:'}
-        placeHolder={'Proposito del rancho'}
+        placeHolder={'Proposito del potrero'}
         type={'text'}
         value={purpose}
         onChagne={handlePurposeChange}
@@ -119,7 +122,7 @@ const NewLandPage = () => {
     />
     <FormItem 
         title={'Área:'}
-        placeHolder={'Ingrese el área del rancho'}
+        placeHolder={'Ingrese el área del potrero'}
         type={'number'}
         value={area}
         onChagne={handleAreaChange}

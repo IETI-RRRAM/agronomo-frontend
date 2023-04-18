@@ -6,7 +6,6 @@ const AnimalsPage = () => {
 
   //Id para consultar Animales del Rancho
   const { id } = useParams();
-
   return (
     <Collection 
       title={'Tus Animales'} 
