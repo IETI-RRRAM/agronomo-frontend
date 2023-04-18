@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import AnimalData from 'src/components/animalData/AnimalData';
 
 const NewAnimalPage = () => {
@@ -7,9 +7,12 @@ const NewAnimalPage = () => {
     
     let { id } = useParams();
 
+    const locationRoute = useLocation();
+
     useEffect(() => {
-      if (id) {
+      if (locationRoute.pathname.includes('/edit')) {
         setIsEdit(true);
+        // getService(id) SE DEBE HACER CONSULTA DE ESA GRANJA
       }
     }, [])
 
