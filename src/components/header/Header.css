@@ -36,11 +36,17 @@
     text-shadow: 0 0 5px #e7e7e7;
 }
 
-.material-symbols-outlined {
+.material-symbols-outlined.user {
     color: var(--main-color);
     font-variation-settings:
     'FILL' 1,
     'wght' 700,
     'GRAD' -25,
     'opsz' 48
+}
+.material-symbols-outlined.user:hover {
+    cursor: pointer;
+}
+.material-symbols-outlined.user:active {
+    color: var(--main-color-dark);
 }
