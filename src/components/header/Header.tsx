@@ -35,7 +35,7 @@ const Header = () => {
                 account_circle
                 {accountOptions && 
                 <ToolTip style={{position: 'absolute', right: '1rem', top: '2rem'}} title='A' description='A' placement='bottom'>
-                  <AccountOpt/>
+                  <AccountOpt setAccountOptions={setAccountOptions}/>
                 </ToolTip>
             }
             </span>
