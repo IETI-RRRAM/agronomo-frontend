@@ -17,29 +17,28 @@ type FormProps = {
     cardUrl: string;
     haveInfo?: boolean;
     infoCardTitle?: string;
+    infoCard?: {[key: string]: string};
 };
 
-const Collection = ({title, cardTitle, cardDescription, endpointUrl, iconUrl, addUrl, editUrl, cardUrl, haveInfo, infoCardTitle}: FormProps) => {
+const Collection = ({title, cardTitle, cardDescription, endpointUrl, iconUrl, addUrl, editUrl, cardUrl, haveInfo, infoCardTitle, infoCard}: FormProps) => {
 
-    const [collectionInfo, setCollectionInfo] = useState(
-    );
+    const [collectionInfo, setCollectionInfo] = useState();
     const [itemsCollection, setItemsCollection] = useState([]);
 
-
-    // Se está usando un url de ejemplo tiene que ser sustituida por nuestros endpoints
     useEffect(() => {
-        getService(endpointUrl).then((response) => setItemsCollection(response.slice(0, 5)));
+        getService(endpointUrl).then((response) => setItemsCollection(response));
     }, []);
+
     return (
         <div className='container'>
             <div className='collection-title'>
                 <h1>{title}</h1>
-                {haveInfo && <InfoCard cardTitle={infoCardTitle ?? ''} info={collectionInfo}></InfoCard>}
+                {haveInfo && <InfoCard cardTitle={infoCardTitle ?? ''} info={infoCard}></InfoCard>}
             </div>
             <main className='card-group'>
                 {
                     itemsCollection.map((item: any, index) => {
-                        return <CollectionCard key={index} icon={iconUrl} editUrl={`${editUrl}${index + 1}`} name={`${item.title.substring(0, 8)}`} detailUrl={`${cardUrl}${item.id}`}/>
+                        return <CollectionCard key={index} icon={(item.imageUrl==="" || item.imageUrl === undefined)?iconUrl:item.imageUrl} editUrl={`${editUrl}${index + 1}`} name={`${item.name}`} detailUrl={`${cardUrl}${item.id}`}/>
                     })
                 }
             </main>
