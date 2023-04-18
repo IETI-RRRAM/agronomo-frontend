@@ -104,7 +104,7 @@ const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
         births: listBirths,
         status: status,
         partner: partner,
-        lastHeats: listLastHeats,
+        lastHeats: [new Date()],
         cycleDuration: cycleDuration,
       };
       event.preventDefault();

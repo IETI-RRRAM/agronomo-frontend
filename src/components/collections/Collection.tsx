@@ -38,7 +38,7 @@ const Collection = ({title, cardTitle, cardDescription, endpointUrl, iconUrl, ad
             <main className='card-group'>
                 {
                     itemsCollection.map((item: any, index) => {
-                        return <CollectionCard key={index} icon={iconUrl} editUrl={`${editUrl}${index + 1}`} name={`${item.name}`} detailUrl={`${cardUrl}${item.id}`}/>
+                        return <CollectionCard key={index} icon={(item.imageUrl==="" || item.imageUrl === undefined)?iconUrl:item.imageUrl} editUrl={`${editUrl}${index + 1}`} name={`${item.name}`} detailUrl={`${cardUrl}${item.id}`}/>
                     })
                 }
             </main>
