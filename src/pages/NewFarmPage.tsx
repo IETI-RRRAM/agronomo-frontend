@@ -1,7 +1,7 @@
 import Form from 'components/form/Form';
 import FormItem from 'components/formItem/FormItem';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom'
 import { uploadFile } from '../../firebase/config'
 import { postService } from 'src/services/postServices';
 
@@ -16,9 +16,10 @@ interface FormType {
 const NewFarmPage = () => {
     const [isEdit, setIsEdit] = useState(false);
 
-    let { id } = useParams();
+    const locationRoute = useLocation();
+
     useEffect(() => {
-      if (id) {
+      if (locationRoute.pathname.includes('/edit')) {
         setIsEdit(true);
         // getService(id) SE DEBE HACER CONSULTA DE ESA GRANJA
       }

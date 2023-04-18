@@ -17,7 +17,7 @@ const AnimalData = ({id, isEdit}: FormProps) => {
 
     const navigate = useNavigate();
 
-    const [idAnimal, setIdAnimal] = useState('643d5d2ebd2a383468c835fe');
+    const [idAnimal, setIdAnimal] = useState(id);
 
     return (
 

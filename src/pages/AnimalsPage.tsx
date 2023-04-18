@@ -14,7 +14,7 @@ const AnimalsPage = () => {
       endpointUrl='https://animal-rest-service-production.up.railway.app/api/animals'
       iconUrl='/src/assets/vaca.svg'
       addUrl='/animals/new'
-      editUrl='/animals/edit/'
+      editUrl={`/animals/edit/${id}`}
       cardUrl='/animal/'
     />
   )
