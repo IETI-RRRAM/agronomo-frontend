@@ -32,16 +32,16 @@ const AnimalInfo = () => {
       });
       getService("https://finance-rest-service-production.up.railway.app/api/finance/animal/" + id)
         .then((response) => {
-        setDataFinance(response);
-      }).catch(value => console.log(value));
+        if (response.status != '404') setDataFinance(response);
+      });
       getService("https://production-rest-service-production.up.railway.app/api/production/animal/" + id).then((response) => {
-        setDataProduction(response);
+        if (response.status != '404') setDataProduction(response);
       });
       getService("https://reproduction-rest-service-production.up.railway.app/api/reproduction/animal/" + id).then((response) => {
-        setDataReproduction(response);
+        if (response.status != '404') setDataReproduction(response);
       });
       getService("https://health-rest-service-production.up.railway.app/api/health/animal/" + id).then((response) => {
-        setDataHealth(response);
+        if (response.status != '404') setDataHealth(response);
       });
     }, [])
 
