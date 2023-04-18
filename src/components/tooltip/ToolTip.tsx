@@ -15,21 +15,23 @@ const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
 }));
 
 type ToolTipProps = {
+    style?: React.CSSProperties;
     title: string;
     description: string;
     children: React.ReactElement<any, any>;
+    placement?: "left" | "right" | "right-end" | "bottom" | "top" | "bottom-end" | "bottom-start" | "left-end" | "left-start" | "right-start" | "top-end" | "top-start";
 }
 
-const ToolTip = ({title, description, children}: ToolTipProps) => {
+const ToolTip = ({title, description, children, placement = 'right-end', style}: ToolTipProps) => {
     return (
         <div>
             <HtmlTooltip
-
+                style={style}
                 title={<>
                     <Typography color="inherit">{title}</Typography>
                     <b>{description}</b>
                 </>}
-                placement='right-end'
+                placement={placement}
                 children={children}
             />
         </div>

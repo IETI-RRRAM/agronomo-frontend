@@ -1,0 +1,58 @@
+.table-container {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+  
+table{
+	background-color: white;
+	text-align: left;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th, td {
+	padding: 1rem 2rem 1rem 3rem;
+}
+
+thead {
+	background-color: var(--main-color);
+	border-bottom: solid 5px var(--main-color-dark);;
+	color: white;
+}
+
+tr:nth-child(even){
+	background-color: #ddd;
+}
+
+tr:hover td{
+	background-color: var(--main-color-dark);
+	color: white;
+}
+
+.material-symbols-outlined.boton-delete {
+    color: red;
+}
+
+.boton-delete:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.material-symbols-outlined.boton-add {
+	color: var(--main-color);
+	font-size: 2rem;
+	display: flex;
+	justify-content: center;
+	margin-top: 1rem;
+}
+
+.boton-add:hover {
+    cursor: pointer;
+	text-decoration: underline;
+}
+
+.no-items {
+	font-size: 0.7rem;
+}
+
+

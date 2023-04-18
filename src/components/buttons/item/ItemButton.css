@@ -1,0 +1,25 @@
+.button-container {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    align-items: flex-start;
+    margin: 1rem;
+}
+
+.button-item {
+    padding:10px;
+    width: 15rem;
+    border:0;
+    box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
+    outline: none;
+    background-color: var(--main-color);
+    border-radius: 0.5rem;
+    color: var(--main-color-text);
+    border: 1px solid var(--main-color-dark);
+    text-align: left;
+}
+
+.button-item:hover{
+    cursor: pointer;
+    background-color: var(--main-color-dark);
+}

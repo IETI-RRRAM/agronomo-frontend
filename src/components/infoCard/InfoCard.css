@@ -11,7 +11,24 @@
     padding: 0 1rem 1rem 1rem;
     align-items: center;
     text-align: center;
+    width: 100%;
 }
 .info-card-items {
     margin: 0 1rem 1rem 1rem;
+}
+
+.container-objects {
+    margin-left: 2rem;
+}
+.section-animal {
+    width: 100%;
+    font-size: 1.2rem;
+}
+
+.button-table {
+    width: 2.5rem;
+    background-color: var(--main-color);
+    border-radius: 0.5rem;
+    border: 2px solid var(--main-color-dark);
+    text-align: center;
 }
