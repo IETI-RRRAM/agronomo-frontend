@@ -21,6 +21,7 @@ const Header = () => {
       }, []);
 
     return (
+        <>
         <header id={'header'} className='header-container'>
             <h2>Agrónomo</h2>
             <nav>
@@ -33,14 +34,12 @@ const Header = () => {
             <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
             <span className="material-symbols-outlined user" onClick={()=>setAccountOptions(!accountOptions)}>
                 account_circle
-                {accountOptions && 
-                <ToolTip style={{position: 'absolute', right: '1rem', top: '2rem'}} title='A' description='A' placement='bottom'>
-                  <AccountOpt setAccountOptions={setAccountOptions}/>
-                </ToolTip>
-            }
             </span>
-            
         </header>
+        { accountOptions && 
+            <AccountOpt setAccountOptions={setAccountOptions}/>
+        }
+        </>
     );
 }
 
