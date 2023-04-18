@@ -25,8 +25,6 @@ const Collection = ({title, cardTitle, cardDescription, endpointUrl, iconUrl, ad
     const [collectionInfo, setCollectionInfo] = useState();
     const [itemsCollection, setItemsCollection] = useState([]);
 
-
-    // Se está usando un url de ejemplo tiene que ser sustituida por nuestros endpoints
     useEffect(() => {
         getService(endpointUrl).then((response) => setItemsCollection(response.slice(0, 5)));
     }, []);

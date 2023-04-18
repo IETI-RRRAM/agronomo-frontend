@@ -3,9 +3,10 @@ import { postService } from "src/services/postServices";
 import Form from 'components/form/Form';
 import FormItem from 'components/formItem/FormItem';
 import {AuthContext} from "components/contexts/AuthContext";
+import getService from "src/services/getService";
 
 function LoginPage(){
-    const BASE_URL = "http://localhost:8080";
+    const BASE_URL = "https://users-rest-service-production-9de5.up.railway.app";
     const [authUser, setAuthUser] = useState({
         email:"",
         password:""
@@ -15,7 +16,7 @@ function LoginPage(){
         password:"",
         error:""
     });
-    const {setToken} = useContext(AuthContext);
+    const {setToken, setUser} = useContext(AuthContext);
 
     const handleEmail = (event: any) => {
         let newEmailValue = event.target.value;
@@ -41,6 +42,18 @@ function LoginPage(){
         setAuthUser({...authUser, password: newPasswordValue});
     };
 
+    const getUserApi = (token:string) => {
+        const options = {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+          };
+          let newUser = getService(`${BASE_URL}/v1/users/email/javier@mail.com`, options);
+          newUser.then(userGot => setUser(userGot))
+    }
+
     const handleSubmit = (event: any ) => {
         event.preventDefault();
         if(authUser.email && authUser.password){
@@ -50,7 +63,9 @@ function LoginPage(){
             .then( data => {
                 if(data?.token){
                     localStorage.setItem("token", data.token);
+                    localStorage.setItem("email", authUser.email)
                     setToken(data.token);
+                    getUserApi(data.token);
                 }else{
                     setErrorAuthData({...errorAuthData, error:data.message});
                     setAuthUser({...authUser, email:"", password: ""});
