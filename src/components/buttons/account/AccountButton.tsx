@@ -1,17 +1,15 @@
 import { useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
-function AccountOpt(){
+import { AuthContext } from "../../contexts/AuthContext";
+const AccountOpt = () => {
     const {setToken} = useContext(AuthContext)
     return ( 
         <ul>
-            <button>Ver Perfil</button>
-            <button onClick={()=> {
+            <button className='submit-button' onClick={()=> {
                 localStorage.clear();
                 setToken("")
             }}>Cerrar Sesion</button>
-            <button>Configuracion</button>
         </ul>
         );
 }
 
-export {AccountOpt};
+export default AccountOpt;

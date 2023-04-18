@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './Header.css'
-import { AccountOpt } from './AccountOpt';
+import AccountOpt from 'components/buttons/account/AccountButton';
+import ToolTip from '../tooltip/ToolTip';
 
 const Header = () => {
     const [accountOptions, setAccountOptions] = useState(false);
@@ -30,10 +31,15 @@ const Header = () => {
                 </ul>
             </nav>
             <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-            <span className="material-symbols-outlined" onClick={()=>setAccountOptions(!accountOptions)}>
+            <span className="material-symbols-outlined user" onClick={()=>setAccountOptions(!accountOptions)}>
                 account_circle
+                {accountOptions && 
+                <ToolTip style={{position: 'absolute', right: '1rem', top: '2rem'}} title='A' description='A' placement='bottom'>
+                  <AccountOpt/>
+                </ToolTip>
+            }
             </span>
-            {accountOptions && <AccountOpt/>}
+            
         </header>
     );
 }
