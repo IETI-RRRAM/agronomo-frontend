@@ -10,71 +10,48 @@ import './AnimalCard.css';
 
 const AnimalInfo = () => {
 
-    //Datos Quemados
-    const dataGeneralCow= {
-      id: "1",
-      idRanch: "12",
-      name: "Vaquerita",
-      type: "Cow",
-      gender: "H",
-      stage: "Engorde",
-      weight: "100 kilos",
-      breed: "Normando",
-      age: "18 meses",
-    }
-
-    const dataGeneralNew = {
-      id: "1",
-      idRanch: "12",
-      name: "Vaquerita",
-      lista1: [
-      {"name": "camilo", "edad": "12", "email": "yesid@mail.com"},
-      {"name": "camilo", "edad": "12", "email": "yesid@mail.com"}],
-      lista2: [
-      {"name": "camilo", "edad": "12", "email": "yesid@mail.com"},
-      {"name": "camilo", "edad": "12", "email": "yesid@mail.com"}],
-      object: {"name": "camilo", "edad": "12", "email": "yesid@mail.com"},
-    }
-
     const { id } = useParams();
-    const [nameAnimal, setNameCow] = useState('Vaquerita');
+    const [nameAnimal, setNameCow] = useState('Vaca');
     const [imageAnimal, setImageAnimal] = useState('https://media.istockphoto.com/id/1205758678/es/foto/cabeza-de-vaca-blanca-y-negra-madura-aspecto-suave-nariz-rosa-delante-de-un-cielo-azul.jpg?b=1&s=612x612&w=0&k=20&c=Ra0ApF1-ZSF8XuR8g2eNy2UNAKAzj0bdsS60HxTviWI=');
+    
     const [openModal, setOpenModal] = useState(false);
-
     const [optionData, setOptionData] = useState('');
     const [listOptionData, setListOptionData] = useState<object>([]);
 
-    const [dataGeneral, setDataGeneral] = useState<object>([]);
+    const [dataGeneral, setDataGeneral] = useState<any>([]);
     const [dataFinance, setDataFinance] = useState<object>([]);
     const [dataProduction, setDataProduction] = useState<object>([]);
     const [dataReproduction, setDataReproduction] = useState<object>([]);
     const [dataHealth, setDataHealth] = useState<object>([]);
 
     useEffect(() => {
-      //getService("url-General").then((response) => {
-      //  setDataGeneral(response.json());
-      //});
-      //getService("url-Finance").then((response) => {
-      //  setDataFinance(response.json());
-      //});
-      //getService("url-Production").then((response) => {
-      //  setDataProduction(response.json());
-      //});
-      //getService("url-Reproduction").then((response) => {
-      //  setDataReproduction(response.json());
-      //});
-      //getService("url-Health").then((response) => {
-      //  setDataHealth(response.json());
-      //});
+      getService("https://animal-rest-service-production.up.railway.app/api/animals/" + id)
+        .then((response) => {
+        setNameCow(response.name);
+        setDataGeneral(response);
+      });
+      getService("https://finance-rest-service-production.up.railway.app/api/finance/animal/" + id)
+        .then((response) => {
+        setDataFinance(response);
+      }).catch(value => console.log(value));
+      getService("https://production-rest-service-production.up.railway.app/api/production/animal/" + id).then((response) => {
+        setDataProduction(response);
+      });
+      getService("https://reproduction-rest-service-production.up.railway.app/api/reproduction/animal/" + id).then((response) => {
+        setDataReproduction(response);
+      });
+      getService("https://health-rest-service-production.up.railway.app/api/health/animal/" + id).then((response) => {
+        setDataHealth(response);
+      });
     }, [])
 
     const handleClickButton = (option: string) => {
       setOptionData(option);
-      if (option == 'Información Salud') setListOptionData(dataGeneralNew);
-      else if (option == 'Información Producción') setListOptionData(dataGeneralNew);
-      else if (option == 'Información Reproducción') setListOptionData(dataGeneralNew);
-      else if (option == 'Información Finanzas') setListOptionData(dataGeneralNew);
-      else setListOptionData(dataGeneralCow);
+      if (option == 'Información Salud') setListOptionData(dataHealth);
+      else if (option == 'Información Producción') setListOptionData(dataProduction);
+      else if (option == 'Información Reproducción') setListOptionData(dataReproduction);
+      else if (option == 'Información Finanzas') setListOptionData(dataFinance);
+      else setListOptionData(dataGeneral);
       handleClickModal();
     } 
 
@@ -98,7 +75,7 @@ const AnimalInfo = () => {
                 </div>
                 
                 <div className='info-general'>
-                  <InfoCard cardTitle="Información General" info={dataGeneralCow}/>
+                  <InfoCard cardTitle="Información General" info={dataGeneral}/>
                 </div>
                 
             </div>

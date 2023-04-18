@@ -40,7 +40,7 @@ const Collection = ({title, cardTitle, cardDescription, endpointUrl, iconUrl, ad
             <main className='card-group'>
                 {
                     itemsCollection.map((item: any, index) => {
-                        return <CollectionCard key={index} icon={iconUrl} editUrl={`${editUrl}${index + 1}`} name={`${item.title.substring(0, 8)}`} detailUrl={`${cardUrl}${item.id}`}/>
+                        return <CollectionCard key={index} icon={iconUrl} editUrl={`${editUrl}${index + 1}`} name={`${item.name.substring(0, 9)}`} detailUrl={`${cardUrl}${item.id}`}/>
                     })
                 }
             </main>

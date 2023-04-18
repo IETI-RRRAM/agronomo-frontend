@@ -8,10 +8,8 @@ const NewAnimalPage = () => {
     let { id } = useParams();
 
     useEffect(() => {
-      console.log("Id " + id);
       if (id) {
         setIsEdit(true);
-        // getService(id) SE DEBE HACER CONSULTA DE ESE ANIMAL
       }
     }, [])
 

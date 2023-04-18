@@ -2,6 +2,9 @@ import Form from 'components/form/Form';
 import FormItem from 'components/formItem/FormItem';
 import { useEffect, useState, useRef } from 'react';
 import SelectItem from '../selectItem/SelectItem';
+import {postService} from '../../services/postServices';
+import getService from 'src/services/getService';
+import {putService} from 'src/services/putService';
 
 interface FormType {
   name: undefined | string;
@@ -15,19 +18,44 @@ interface FormType {
 
 interface FormProps {
   id: undefined | string;
-  isEdit: undefined | boolean;
+  isEdit: boolean;
+  setId: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const AnimalDataGeneral = ({id, isEdit}: FormProps) => {
+const AnimalDataGeneral = ({id, isEdit, setId}: FormProps) => {
+
+    useEffect(() => {
+      if (isEdit) {
+        getService("https://animal-rest-service-production.up.railway.app/api/animals/" + id)
+        .then(value => {
+          setName(value.name);
+          setType(value.type);
+          setGender(value.gender);
+          setStage(value.stage);
+          setWeight(value.weight);
+          setBreed(value.breed);
+          setAge(value.age);
+          setValidForm({
+            name: '',
+            type: '',
+            gender: '',
+            stage: '',
+            weight: '',
+            breed: '',
+            age: '',
+          });
+        })
+      }
+    }, [isEdit])
 
     const optionsType: string[] = ["Bovino", "Equino", "Pollo", "Conejo"];
-    const optionsGender: string[] = ["Macho", "Hembra"];
+    const optionsGender: string[] = ["Hembra", "Macho"];
     const selectRefTypes = useRef<HTMLSelectElement>(null);
     const selectRefGender = useRef<HTMLSelectElement>(null);
 
     const [name, setName] = useState('');
-    const [type, setType] = useState('');
-    const [gender, setGender] = useState('');
+    const [type, setType] = useState(optionsType[0]);
+    const [gender, setGender] = useState(optionsGender[0]);
     const [stage, setStage] = useState('');
     const [weight, setWeight] = useState('');
     const [breed, setBreed] = useState('');
@@ -35,8 +63,8 @@ const AnimalDataGeneral = ({id, isEdit}: FormProps) => {
 
     const [validForm, setValidForm] = useState<FormType>({
       name: undefined,
-      type: undefined,
-      gender: undefined,
+      type: '',
+      gender: '',
       stage: undefined,
       weight: undefined,
       breed: undefined,
@@ -56,8 +84,14 @@ const AnimalDataGeneral = ({id, isEdit}: FormProps) => {
       };
       event.preventDefault();
       clearVariable();
-      console.log(formData);
-    };
+      if (!isEdit) {
+        postService("https://animal-rest-service-production.up.railway.app/api/animals", formData)
+        .then(data => setId(data.id));
+      } else {
+        putService("https://animal-rest-service-production.up.railway.app/api/animals/" + id, formData)
+        .then(data => setId(data.id));
+      }
+    }
 
     const clearVariable = () => {
       setName('');
@@ -69,8 +103,8 @@ const AnimalDataGeneral = ({id, isEdit}: FormProps) => {
       setAge('');
       setValidForm({
         name: undefined,
-        type: undefined,
-        gender: undefined,
+        type: '',
+        gender: '',
         stage: undefined,
         weight: undefined,
         breed: undefined,
@@ -99,7 +133,7 @@ const AnimalDataGeneral = ({id, isEdit}: FormProps) => {
     }
 
     const handleGenderChange = () => {
-      const value = selectRefTypes.current?.value;
+      const value = selectRefGender.current?.value;
       setValidForm({
         ...validForm,
         gender: ''

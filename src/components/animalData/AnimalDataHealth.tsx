@@ -8,6 +8,9 @@ import Modal from '../modal/Modal';
 import FormAddTreatments from '../formAddAnimal/FormAddTreatments';
 import FormAddMed from '../formAddAnimal/FormAddMed';
 import FormAddAlert from '../formAddAnimal/FormAddAlert';
+import {postService} from '../../services/postServices';
+import getService from 'src/services/getService';
+import {putService} from 'src/services/putService';
 
 interface FormTypeGeneral {
   status: undefined | string;
@@ -15,10 +18,28 @@ interface FormTypeGeneral {
 
 interface FormProps {
   id: undefined | string;
-  isEdit: undefined | boolean;
+  isEdit: boolean;
 }
 
 const AnimalDataHealth = ({id, isEdit}: FormProps) => {
+
+    const [idHealth, setIdHealth] = useState('643701dd2e851b2cd7ce4360');
+
+    useEffect(() => {
+        if (isEdit) {
+            getService("https://health-rest-service-production.up.railway.app/api/health/" + idHealth)
+            .then((response) => {
+              setIdHealth(response.id);
+              setStatus(response.status);
+              setListTreatments(response.treatments);
+              setListMeds(response.meds);
+              setListAlerts(response.alerts);
+              setValidFormGeneral({
+                status: ''
+              });
+            });
+        }
+    }, [isEdit])
 
     //Data General
     const [status, setStatus] = useState('');
@@ -105,7 +126,11 @@ const AnimalDataHealth = ({id, isEdit}: FormProps) => {
       };
       event.preventDefault();
       clearVariable();
-      console.log(formData);
+      if (!isEdit) {
+        postService("https://health-rest-service-production.up.railway.app/api/health", formData);
+      } else {
+        putService("https://health-rest-service-production.up.railway.app/api/health/" + idHealth, formData);
+      }
     };
 
     const clearVariable = () => {

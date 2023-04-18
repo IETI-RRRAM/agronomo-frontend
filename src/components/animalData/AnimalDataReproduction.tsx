@@ -7,24 +7,46 @@ import Table from '../table/Table';
 import Modal from '../modal/Modal';
 import FormAddBirth from '../formAddAnimal/FormAddBirth';
 import FormAddLastHeats from '../formAddAnimal/FormAddLastHeats';
+import {postService} from '../../services/postServices';
+import getService from 'src/services/getService';
+import {putService} from 'src/services/putService';
 
 interface FormType {
   status: undefined | string;
   partner: undefined | string;
-  nextHeat: undefined | string;
   cycleDuration: undefined | string;
 }
 
 interface FormProps {
   id: undefined | string;
-  isEdit: undefined | boolean;
+  isEdit: boolean;
 }
 
 const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
 
+    const [idReproduction, setIdReproduction] = useState('6437209782757a3042370df6');
+
+    useEffect(() => {
+      if (isEdit) {
+        getService("https://reproduction-rest-service-production.up.railway.app/api/reproduction/" + idReproduction)
+        .then((response) => {
+            setIdReproduction(response.id);
+            setListBirths(response.births);
+            setStatus(response.status);
+            setPartner(response.partner);
+            setListLastHeats(response.lastHeats);
+            setCicleDuration(response.cycleDuration);
+            setValidForm({
+              status: '',
+              partner: '',
+              cycleDuration: ''
+            });
+        });
+      }
+    }, [isEdit])
+
     const [status, setStatus] = useState('');
     const [partner, setPartner] = useState('');
-    const [nextHeat, setNextHeat] = useState('');
     const [cycleDuration, setCicleDuration] = useState('');
     const [listBirths, setListBirths] = useState<string[]>([]);
     const [listLastHeats, setListLastHeats] = useState<string[]>([]);
@@ -37,7 +59,6 @@ const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
     const [validForm, setValidForm] = useState<FormType>({
         status: undefined,
         partner: undefined,
-        nextHeat: undefined,
         cycleDuration: undefined,
     });
 
@@ -84,25 +105,26 @@ const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
         status: status,
         partner: partner,
         lastHeats: listLastHeats,
-        nextHeat: nextHeat,
         cycleDuration: cycleDuration,
       };
       event.preventDefault();
       clearVariable();
-      console.log(formData);
+      if (!isEdit) {
+        postService("https://reproduction-rest-service-production.up.railway.app/api/reproduction", formData);
+      } else {
+        putService("https://reproduction-rest-service-production.up.railway.app/api/reproduction/" + idReproduction, formData);
+      }
     };
 
     const clearVariable = () => {
       setStatus('');
       setPartner('');
-      setNextHeat('');
       setCicleDuration('');
       setListBirths([]);
       setListLastHeats([]);
       setValidForm({
         status: undefined,
         partner: undefined,
-        nextHeat: undefined,
         cycleDuration: undefined,
       });
       setOpenDropdown(false);
@@ -124,15 +146,6 @@ const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
           partner: value.length === 0 ? 'La pareja del animal es obligatorio' : ''
         });
         setPartner(value);
-    }
-
-    const handleNextHeatChange = (event: any) => {
-        const value = event.target.value;
-        setValidForm({
-          ...validForm,
-          nextHeat: value.length === 0 ? 'El siguien calor es obligatorio' : ''
-        });
-        setNextHeat(value);
     }
 
     const handleCycleDurationChange = (event: any) => {
@@ -187,14 +200,6 @@ const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
           value={partner}
           onChagne={handlePartnerChange}
           error={validForm.partner}
-      />
-      <FormItem 
-          title={'Siguiente Calor:'}
-          placeHolder={'Ingrese el siguiente calor del animal'}
-          type={'date'}
-          value={nextHeat}
-          onChagne={handleNextHeatChange}
-          error={validForm.nextHeat}
       />
       <FormItem 
           title={'Ciclo de Duración:'}

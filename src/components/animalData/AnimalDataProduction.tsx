@@ -6,6 +6,9 @@ import Table from '../table/Table';
 import ItemButton from '../buttons/item/ItemButton';
 import Modal from '../modal/Modal';
 import FormAddProduct from '../formAddAnimal/FormAddProduct';
+import {postService} from '../../services/postServices';
+import getService from 'src/services/getService';
+import {putService} from 'src/services/putService';
 
 interface FormType {
   totalProduction: undefined | string;
@@ -13,16 +16,24 @@ interface FormType {
 
 interface FormProps {
   id: undefined | string;
-  isEdit: undefined | boolean;
+  isEdit: boolean;
 }
 
 const AnimalDataProduction = ({id, isEdit}: FormProps) => {
 
-    const [totalProduction, setTotalProduction] = useState('');
+    const [idProduction, setIdProduction] = useState('643710881bae917097607d0b');
+
+    useEffect(() => {
+      if (isEdit) {
+        getService("https://production-rest-service-production.up.railway.app/api/production/" + idProduction)
+        .then((response) => {
+          setIdProduction(response.id);
+          setListProducts(response.productions);
+        });
+      }
+    }, [isEdit])
+
     const [listProducts, setListProducts] = useState<string[]>([]); 
-    const [validForm, setValidForm] = useState<FormType>({
-      totalProduction: undefined,
-    });
 
     //Dropdown
     const [openDropdown, setOpenDropdown] = useState(false);
@@ -58,29 +69,19 @@ const AnimalDataProduction = ({id, isEdit}: FormProps) => {
       const formData = {
         idAnimal: id,
         productions: listProducts,
-        totalProduction: totalProduction,
       };
       event.preventDefault();
       clearVariable();
-      console.log(formData);
+      if (!isEdit) {
+        postService("https://production-rest-service-production.up.railway.app/api/production", formData);
+      } else {
+        putService("https://production-rest-service-production.up.railway.app/api/production/" + idProduction, formData);
+      }
     };
 
     const clearVariable = () => {
-      setTotalProduction('');
       setListProducts([]);
-      setValidForm({
-        totalProduction: undefined,
-      });
       setOpenDropdown(false);
-    }
-
-    const handleTotalProductionChange = (event: any) => {
-      const value = event.target.value;
-      setValidForm({
-        ...validForm,
-        totalProduction: value.length === 0 ? 'El total de producción es obligatorio' : ''
-      });
-      setTotalProduction(value);
     }
 
     const handleClickProducs = (event: any): void => {
@@ -91,21 +92,11 @@ const AnimalDataProduction = ({id, isEdit}: FormProps) => {
       }
     }
 
-    const isValid = Object.keys(validForm).every(
-      (key) => validForm[key as keyof typeof validForm] === ''
-    )
+    const isValid = true;
 
     return (
       <>
       <Form title={isEdit ? 'Edita los datos de Producción' : 'Añade los datos de Producción'} onSubmit={onSubmit} isValid={isValid} buttonText={isEdit ? 'Editar' : 'Crear'}>
-      <FormItem 
-          title={'Total de Producción:'}
-          placeHolder={'Ingrese el total de producción'}
-          type={'text'}
-          value={totalProduction}
-          onChagne={handleTotalProductionChange}
-          error={validForm.totalProduction}
-      />
       <ItemButton 
           title={'Productos:'} 
           value={'Ver Lista de Productos'}

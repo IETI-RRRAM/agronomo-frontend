@@ -51,4 +51,8 @@ tr:hover td{
 	text-decoration: underline;
 }
 
+.no-items {
+	font-size: 0.7rem;
+}
+
 

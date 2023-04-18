@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import './Table.css';
 
 type FormProps = {
@@ -18,6 +19,8 @@ const Table = ({listObjects = [], isEdit, onDelete, onAdd}: FormProps) => {
 
     return (
         <div className="table-container">
+          {
+          (listObjects.length != 0)?
           <table>
             <thead>
               <tr>
@@ -47,6 +50,8 @@ const Table = ({listObjects = [], isEdit, onDelete, onAdd}: FormProps) => {
               ))}
             </tbody>
           </table>
+          :<h1 className='no-items'>No Hay Items Para Mostrar</h1>
+          }
           {
             (isEdit &&
             <span className="material-symbols-outlined boton-add" onClick={onAdd}>

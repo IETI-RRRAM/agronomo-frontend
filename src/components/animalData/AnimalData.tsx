@@ -4,17 +4,20 @@ import AnimalDataHealth from 'src/components/animalData/AnimalDataHealth';
 import AnimalDataProduction from 'src/components/animalData/AnimalDataProduction';
 import AnimalDataReproduction from 'src/components/animalData/AnimalDataReproduction';
 import { useNavigate } from 'react-router-dom';
+import getService from 'src/services/getService';
+import { useEffect, useState } from 'react';
 import './AnimalData.css';
 
 interface FormProps {
     id: undefined | string;
-    isEdit: undefined | boolean;
+    isEdit: boolean;
 }  
 
 const AnimalData = ({id, isEdit}: FormProps) => {
 
-    const componentes = [AnimalDataGeneral, AnimalDataFinance, AnimalDataHealth, AnimalDataProduction, AnimalDataReproduction];
     const navigate = useNavigate();
+
+    const [idAnimal, setIdAnimal] = useState('643d710fbd2a383468c83601');
 
     return (
 
@@ -22,11 +25,15 @@ const AnimalData = ({id, isEdit}: FormProps) => {
 
         <div className='data-title'><h1>{(!isEdit)?"Agrega un nuevo Animal":"Edita la información del Animal"}</h1></div>
 
-        {componentes.map((Componente, index) => (
-          <div className='component' key={index}>
-            <Componente key={index} id={id} isEdit={isEdit}/>
-          </div>
-        ))}
+        <AnimalDataGeneral id={idAnimal} isEdit={isEdit} setId={setIdAnimal} /> 
+
+        <AnimalDataFinance id={idAnimal} isEdit={isEdit}/>
+
+        <AnimalDataHealth id={idAnimal} isEdit={isEdit}/>
+
+        <AnimalDataProduction id={idAnimal} isEdit={isEdit}/>
+
+        <AnimalDataReproduction id={idAnimal} isEdit={isEdit}/>
 
         <button onClick={() => navigate(-1)} className='data-button'>Aceptar</button>
     </div>

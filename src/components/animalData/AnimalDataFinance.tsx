@@ -1,29 +1,45 @@
 import Form from 'components/form/Form';
 import FormItem from 'components/formItem/FormItem';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import {postService} from '../../services/postServices';
+import getService from 'src/services/getService';
+import {putService} from 'src/services/putService';
 
 interface FormType {
   moneyProduced: undefined | string;
   moneySpent: undefined | string;
-  profitability: undefined | string;
 }
 
 interface FormProps {
   id: undefined | string;
-  isEdit: undefined | boolean;
+  isEdit: boolean;
 }
 
 const AnimalDataFinance = ({id, isEdit}: FormProps) => {
 
+    const [idFinance, setIdFinance] = useState('6436dce279c07e2ba8d6655b');
+
+    useEffect(() => {
+      if (isEdit) {
+        getService("https://finance-rest-service-production.up.railway.app/api/finance/" + idFinance)
+        .then((response) => {
+          setIdFinance(response.id);
+          setMoneyProduced(response.moneyProduced);
+          setMoneySpent(response.moneySpent);
+          setValidForm({
+            moneyProduced: '',
+            moneySpent: '',
+          });
+        });
+      }
+    }, [isEdit])
+
     const [moneyProduced, setMoneyProduced] = useState('');
     const [moneySpent, setMoneySpent] = useState('');
-    const [profitability, setProfitability] = useState('');
 
     const [validForm, setValidForm] = useState<FormType>({
       moneyProduced: undefined,
       moneySpent: undefined,
-      profitability: undefined,
     });
 
     const onSubmit = (event: any): void => {
@@ -31,21 +47,22 @@ const AnimalDataFinance = ({id, isEdit}: FormProps) => {
         idAnimal: id,
         moneyProduced: moneyProduced,
         moneySpent: moneySpent,
-        profitability: profitability,
       };
       event.preventDefault();
-      console.log(formData);
       clearVariable();
-    };
+      if (!isEdit) {
+        postService("https://finance-rest-service-production.up.railway.app/api/finance", formData);
+      } else {
+        putService("https://finance-rest-service-production.up.railway.app/api/finance/" + idFinance, formData);
+      }
+    }
 
     const clearVariable = () => {
       setMoneyProduced('');
       setMoneySpent('');
-      setProfitability('');
       setValidForm({
         moneyProduced: undefined,
         moneySpent: undefined,
-        profitability: undefined,
       });
     }
 
@@ -65,15 +82,6 @@ const AnimalDataFinance = ({id, isEdit}: FormProps) => {
         moneySpent: value.length === 0 ? 'El dinero gastado es obligatorio' : ''
       });
       setMoneySpent(value);
-    }
-
-    const handleProfitabilityChange = (event: any) => {
-      const value = event.target.value;
-      setValidForm({
-        ...validForm,
-        profitability: value.length === 0 ? 'La rentabilidad es obligatoria' : ''
-      });
-      setProfitability(value);
     }
 
     const isValid = Object.keys(validForm).every(
@@ -98,14 +106,6 @@ const AnimalDataFinance = ({id, isEdit}: FormProps) => {
         value={moneySpent}
         onChagne={handleMoneySpentChange}
         error={validForm.moneySpent}
-    />
-    <FormItem 
-        title={'Rentabilidad:'}
-        placeHolder={'Ingrese la rentabilidad'}
-        type={'number'}
-        value={profitability}
-        onChagne={handleProfitabilityChange}
-        error={validForm.profitability}
     />
     </Form>);
 }

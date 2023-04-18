@@ -2,6 +2,7 @@ import Collection from 'components/collections/Collection';
 import { useParams } from 'react-router-dom';
 
 const LandPage = () => {
+  
   const { id } = useParams();
 
   const dataRanch: {[key: string]: string} =  {
