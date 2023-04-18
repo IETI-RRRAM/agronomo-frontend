@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './Header.css'
+import { AccountOpt } from './AccountOpt';
 
 const Header = () => {
+    const [accountOptions, setAccountOptions] = useState(false);
     useEffect(() => {
         let ubication = window.scrollY;
         window.onscroll = function () {
@@ -28,9 +30,10 @@ const Header = () => {
                 </ul>
             </nav>
             <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-            <span className="material-symbols-outlined">
+            <span className="material-symbols-outlined" onClick={()=>setAccountOptions(!accountOptions)}>
                 account_circle
             </span>
+            {accountOptions && <AccountOpt/>}
         </header>
     );
 }
