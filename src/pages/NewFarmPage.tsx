@@ -3,6 +3,7 @@ import FormItem from 'components/formItem/FormItem';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { uploadFile } from '../../firebase/config'
+import { postService } from 'src/services/postServices';
 
 interface FormType {
   location: undefined | string;
@@ -48,13 +49,13 @@ const NewFarmPage = () => {
       }
       const formData = {
         name: name,
+        ownerId : localStorage.getItem("userId"),
         location: location,
         area: Number(area),
         purpose: purpose,
-        image: fileUrl
+        imageUrl: fileUrl
       };
-      console.log(formData);
-      // postService(URL, formData);
+      postService(`${import.meta.env.VITE_BASE_URL_FARM}v1/farm`, formData)
     };
 
     const handleNameChange = (event: any) => {
@@ -122,7 +123,7 @@ const NewFarmPage = () => {
     />
     <FormItem 
         title={'Proposito:'}
-        placeHolder={'Proposito del rancho'}
+        placeHolder={'Proposito del Granja'}
         type={'text'}
         value={purpose}
         onChagne={handlePurposeChange}
@@ -138,7 +139,7 @@ const NewFarmPage = () => {
     />
     <FormItem 
         title={'Área:'}
-        placeHolder={'Ingrese el área del rancho'}
+        placeHolder={'Ingrese el área de la granja'}
         type={'number'}
         value={area}
         onChagne={handleAreaChange}

@@ -50,8 +50,11 @@ function LoginPage(){
               'Authorization': `Bearer ${token}`
             },
           };
-          let newUser = getService(`${BASE_URL}/v1/users/email/javier@mail.com`, options);
-          newUser.then(userGot => setUser(userGot))
+          let newUser = getService(`${BASE_URL}/v1/users/email/${authUser.email}`, options);
+          newUser.then(userGot => {
+            setUser(userGot);
+            localStorage.setItem("userId", userGot.id);
+          })
     }
 
     const handleSubmit = (event: any ) => {
