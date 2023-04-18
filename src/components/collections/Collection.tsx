@@ -26,7 +26,7 @@ const Collection = ({title, cardTitle, cardDescription, endpointUrl, iconUrl, ad
     const [itemsCollection, setItemsCollection] = useState([]);
 
     useEffect(() => {
-        getService(endpointUrl).then((response) => setItemsCollection(response.slice(0, 5)));
+        getService(endpointUrl).then((response) => setItemsCollection(response));
     }, []);
     return (
         <div className='container'>
@@ -37,7 +37,7 @@ const Collection = ({title, cardTitle, cardDescription, endpointUrl, iconUrl, ad
             <main className='card-group'>
                 {
                     itemsCollection.map((item: any, index) => {
-                        return <CollectionCard key={index} icon={iconUrl} editUrl={`${editUrl}${index + 1}`} name={`${item.title.substring(0, 8)}`} detailUrl={`${cardUrl}${item.id}`}/>
+                        return <CollectionCard key={index} icon={iconUrl} editUrl={`${editUrl}${index + 1}`} name={`${item.name}`} detailUrl={`${cardUrl}${item.id}`}/>
                     })
                 }
             </main>

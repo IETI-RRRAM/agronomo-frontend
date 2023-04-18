@@ -103,7 +103,7 @@ const NewLandPage = () => {
     />
     <FormItem 
         title={'Proposito:'}
-        placeHolder={'Proposito del rancho'}
+        placeHolder={'Proposito del potrero'}
         type={'text'}
         value={purpose}
         onChagne={handlePurposeChange}
@@ -119,7 +119,7 @@ const NewLandPage = () => {
     />
     <FormItem 
         title={'Área:'}
-        placeHolder={'Ingrese el área del rancho'}
+        placeHolder={'Ingrese el área del potrero'}
         type={'number'}
         value={area}
         onChagne={handleAreaChange}
