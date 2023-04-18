@@ -33,7 +33,7 @@ const Header = () => {
             <span className="material-symbols-outlined" onClick={()=>setAccountOptions(!accountOptions)}>
                 account_circle
             </span>
-            {accountOptions && <AccountOpt/>}
+            {accountOptions && <AccountOpt setAccountOptions={setAccountOptions} />}
         </header>
     );
 }
