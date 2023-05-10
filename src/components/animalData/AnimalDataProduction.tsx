@@ -1,39 +1,59 @@
 import Form from 'components/form/Form';
-import FormItem from 'components/formItem/FormItem';
 import { useEffect, useState } from 'react';
 import Dropdown from '../dropdown/Dropdown';
 import Table from '../table/Table';
 import ItemButton from '../buttons/item/ItemButton';
 import Modal from '../modal/Modal';
 import FormAddProduct from '../formAddAnimal/FormAddProduct';
-import {postService} from '../../services/postServices';
 import getService from 'src/services/getService';
-import {putService} from 'src/services/putService';
-
-interface FormType {
-  totalProduction: undefined | string;
-}
 
 interface FormProps {
   id: undefined | string;
   isEdit: boolean;
+  validFormAnimal: FormTypeAnimal;
+  setValidFormAnimal: React.Dispatch<React.SetStateAction<any>>;
+  validFormAnimalData: FormTypeData;
+  setValidFormAnimalData: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const AnimalDataProduction = ({id, isEdit}: FormProps) => {
+interface FormTypeAnimal {
+  general: boolean;
+  finance: boolean;
+  health: boolean;
+  production: boolean;
+  reproduction: boolean;
+}
 
-    const [idProduction, setIdProduction] = useState('643710881bae917097607d0b');
+interface FormTypeData {
+  general: {};
+  finance: {};
+  health: {};
+  production: {};
+  reproduction: {};
+}
+
+interface FormTypeId {
+  general: string | undefined;
+  finance: string | undefined;
+  health: string | undefined;
+  production: string | undefined;
+  reproduction: string | undefined;
+}
+
+const AnimalDataProduction = ({id, isEdit, validFormAnimal, setValidFormAnimal, validFormAnimalData, setValidFormAnimalData}: FormProps) => {
+
+    const [idProduction, setIdProduction] = useState('');
+    const [listProducts, setListProducts] = useState<string[]>([]); 
 
     useEffect(() => {
       if (isEdit) {
-        getService("https://production-rest-service-production.up.railway.app/api/production/" + idProduction)
+        getService("https://production-rest-service-production.up.railway.app/api/production/animal/" + id)
         .then((response) => {
           setIdProduction(response.id);
           setListProducts(response.productions);
         });
       }
-    }, [isEdit])
-
-    const [listProducts, setListProducts] = useState<string[]>([]); 
+    }, [])
 
     //Dropdown
     const [openDropdown, setOpenDropdown] = useState(false);
@@ -65,23 +85,39 @@ const AnimalDataProduction = ({id, isEdit}: FormProps) => {
       setListItemsDropdown(newList);
     }
 
-    const onSubmit = (event: any): void => {
-      const formData = {
-        idAnimal: id,
-        productions: listProducts,
-      };
-      event.preventDefault();
-      clearVariable();
-      if (!isEdit) {
-        postService("https://production-rest-service-production.up.railway.app/api/production", formData);
+    useEffect(() => {
+      const isValid = listProducts.length > 0;
+      if (isValid) {
+        setValidFormAnimal({
+          ...validFormAnimal,
+          production: true
+        });
+        onSubmitData();
       } else {
-        putService("https://production-rest-service-production.up.railway.app/api/production/" + idProduction, formData);
+        setValidFormAnimal({
+          ...validFormAnimal,
+          production: false
+        });
       }
-    };
+    }, [listProducts])
 
-    const clearVariable = () => {
-      setListProducts([]);
-      setOpenDropdown(false);
+    const onSubmitData = () => {
+      let formData;
+      if (isEdit) {
+        formData = {
+          id: idProduction,
+          idAnimal: id,
+          productions: listProducts,
+        };
+      } else {
+        formData = {
+          productions: listProducts,
+        };
+      }
+      setValidFormAnimalData({
+        ...validFormAnimalData,
+        production: formData
+      });
     }
 
     const handleClickProducs = (event: any): void => {
@@ -92,11 +128,9 @@ const AnimalDataProduction = ({id, isEdit}: FormProps) => {
       }
     }
 
-    const isValid = true;
-
     return (
       <>
-      <Form title={isEdit ? 'Edita los datos de Producción' : 'Añade los datos de Producción'} onSubmit={onSubmit} isValid={isValid} buttonText={isEdit ? 'Editar' : 'Crear'}>
+      <Form title={isEdit ? 'Edita los datos de Producción' : 'Añade los datos de Producción'}>
       <ItemButton 
           title={'Productos:'} 
           value={'Ver Lista de Productos'}

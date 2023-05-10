@@ -8,9 +8,7 @@ import Modal from '../modal/Modal';
 import FormAddTreatments from '../formAddAnimal/FormAddTreatments';
 import FormAddMed from '../formAddAnimal/FormAddMed';
 import FormAddAlert from '../formAddAnimal/FormAddAlert';
-import {postService} from '../../services/postServices';
 import getService from 'src/services/getService';
-import {putService} from 'src/services/putService';
 
 interface FormTypeGeneral {
   status: undefined | string;
@@ -19,29 +17,40 @@ interface FormTypeGeneral {
 interface FormProps {
   id: undefined | string;
   isEdit: boolean;
+  validFormAnimal: FormTypeAnimal;
+  setValidFormAnimal: React.Dispatch<React.SetStateAction<any>>;
+  validFormAnimalData: FormTypeData;
+  setValidFormAnimalData: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const AnimalDataHealth = ({id, isEdit}: FormProps) => {
+interface FormTypeAnimal {
+  general: boolean;
+  finance: boolean;
+  health: boolean;
+  production: boolean;
+  reproduction: boolean;
+}
 
-    const [idHealth, setIdHealth] = useState('643701dd2e851b2cd7ce4360');
+interface FormTypeData {
+  general: {};
+  finance: {};
+  health: {};
+  production: {};
+  reproduction: {};
+}
 
-    useEffect(() => {
-        if (isEdit) {
-            getService("https://health-rest-service-production.up.railway.app/api/health/" + idHealth)
-            .then((response) => {
-              setIdHealth(response.id);
-              setStatus(response.status);
-              setListTreatments(response.treatments);
-              setListMeds(response.meds);
-              setListAlerts(response.alerts);
-              setValidFormGeneral({
-                status: ''
-              });
-            });
-        }
-    }, [isEdit])
+interface FormTypeId {
+  general: string | undefined;
+  finance: string | undefined;
+  health: string | undefined;
+  production: string | undefined;
+  reproduction: string | undefined;
+}
+
+const AnimalDataHealth = ({id, isEdit, validFormAnimal, setValidFormAnimal, validFormAnimalData, setValidFormAnimalData}: FormProps) => {
 
     //Data General
+    const [idHealth, setIdHealth] = useState('');
     const [status, setStatus] = useState('');
     const [listTreatments, setListTreatments] = useState<string[]>([]);
     const [listMeds, setListMeds] = useState<string[]>([]);
@@ -57,6 +66,22 @@ const AnimalDataHealth = ({id, isEdit}: FormProps) => {
     const [validFormGeneral, setValidFormGeneral] = useState<FormTypeGeneral>({
       status: undefined,
     });
+
+    useEffect(() => { 
+      if (isEdit) {
+          getService("https://health-rest-service-production.up.railway.app/api/health/animal/" + id)
+          .then((response) => {
+            setIdHealth(response.id);
+            setStatus(response.status);
+            setListTreatments(response.treatments);
+            setListMeds(response.meds);
+            setListAlerts(response.alerts);
+            setValidFormGeneral({
+              status: ''
+            });
+          });
+      }
+    }, [])
 
     //Modal 
     const [openModal, setOpenModal] = useState(false);
@@ -116,32 +141,47 @@ const AnimalDataHealth = ({id, isEdit}: FormProps) => {
       setListItemsDropdown(newList);
     }
 
-    const onSubmit = (event: any): void => {
-      const formData = {
-        idAnimal: id,
-        status: status,
-        treatments: listTreatments,
-        meds: listMeds,
-        alerts: listAlerts,
-      };
-      event.preventDefault();
-      clearVariable();
-      if (!isEdit) {
-        postService("https://health-rest-service-production.up.railway.app/api/health", formData);
+    useEffect(() => {
+      const isValid = Object.keys(validFormGeneral).every(
+        (key) => validFormGeneral[key as keyof typeof validFormGeneral] === ''
+      )
+      if (isValid) {
+        setValidFormAnimal({
+          ...validFormAnimal,
+          health: true
+        });
+        onSubmitData();
       } else {
-        putService("https://health-rest-service-production.up.railway.app/api/health/" + idHealth, formData);
+        setValidFormAnimal({
+          ...validFormAnimal,
+          health: false
+        });
       }
-    };
+    }, [validFormGeneral, listTreatments, listMeds, listAlerts, status])
 
-    const clearVariable = () => {
-      setStatus('');
-      setListTreatments([]);
-      setListMeds([]);
-      setListAlerts([]);
-      setValidFormGeneral({
-        status: undefined,
+    const onSubmitData = () => {
+      let formData;
+      if (isEdit) {
+        formData = {
+          id: idHealth,
+          idAnimal: id,
+          status: status,
+          treatments: listTreatments,
+          meds: listMeds,
+          alerts: listAlerts,
+        };
+      } else {
+        formData = {
+          status: status,
+          treatments: listTreatments,
+          meds: listMeds,
+          alerts: listAlerts,
+        };
+      }
+      setValidFormAnimalData({
+        ...validFormAnimalData,
+        health: formData
       });
-      setOpenDropdown(false);
     }
 
     const handleStatusChange = (event: any) => {
@@ -183,13 +223,9 @@ const AnimalDataHealth = ({id, isEdit}: FormProps) => {
       }
     }
 
-    const isValidGeneral = Object.keys(validFormGeneral).every(
-      (key) => validFormGeneral[key as keyof typeof validFormGeneral] === ''
-    )
-
     return (
     <>
-      <Form title={isEdit ? 'Edita los datos de Salud' : 'Añade los datos de Salud'} onSubmit={onSubmit} isValid={isValidGeneral} buttonText={isEdit ? 'Editar' : 'Crear'}>
+      <Form title={isEdit ? 'Edita los datos de Salud' : 'Añade los datos de Salud'} >
       <FormItem 
           title={'Estado Animal:'}
           placeHolder={'Ingrese el estado del animal'}

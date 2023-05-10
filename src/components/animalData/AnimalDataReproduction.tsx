@@ -7,9 +7,7 @@ import Table from '../table/Table';
 import Modal from '../modal/Modal';
 import FormAddBirth from '../formAddAnimal/FormAddBirth';
 import FormAddLastHeats from '../formAddAnimal/FormAddLastHeats';
-import {postService} from '../../services/postServices';
 import getService from 'src/services/getService';
-import {putService} from 'src/services/putService';
 
 interface FormType {
   status: undefined | string;
@@ -20,31 +18,39 @@ interface FormType {
 interface FormProps {
   id: undefined | string;
   isEdit: boolean;
+  validFormAnimal: FormTypeAnimal;
+  setValidFormAnimal: React.Dispatch<React.SetStateAction<any>>;
+  validFormAnimalData: FormTypeData;
+  setValidFormAnimalData: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
+interface FormTypeAnimal {
+  general: boolean;
+  finance: boolean;
+  health: boolean;
+  production: boolean;
+  reproduction: boolean;
+}
 
-    const [idReproduction, setIdReproduction] = useState('6437209782757a3042370df6');
+interface FormTypeData {
+  general: {};
+  finance: {};
+  health: {};
+  production: {};
+  reproduction: {};
+}
 
-    useEffect(() => {
-      if (isEdit) {
-        getService("https://reproduction-rest-service-production.up.railway.app/api/reproduction/" + idReproduction)
-        .then((response) => {
-            setIdReproduction(response.id);
-            setListBirths(response.births);
-            setStatus(response.status);
-            setPartner(response.partner);
-            setListLastHeats(response.lastHeats);
-            setCicleDuration(response.cycleDuration);
-            setValidForm({
-              status: '',
-              partner: '',
-              cycleDuration: ''
-            });
-        });
-      }
-    }, [isEdit])
+interface FormTypeId {
+  general: string | undefined;
+  finance: string | undefined;
+  health: string | undefined;
+  production: string | undefined;
+  reproduction: string | undefined;
+}
 
+const AnimalDataReproduction = ({id, isEdit, validFormAnimal, setValidFormAnimal, validFormAnimalData, setValidFormAnimalData}: FormProps) => {
+
+    const [idReproduction, setIdReproduction] = useState('');
     const [status, setStatus] = useState('');
     const [partner, setPartner] = useState('');
     const [cycleDuration, setCicleDuration] = useState('');
@@ -61,6 +67,25 @@ const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
         partner: undefined,
         cycleDuration: undefined,
     });
+
+    useEffect(() => {
+      if (isEdit) {
+        getService("https://reproduction-rest-service-production.up.railway.app/api/reproduction/animal/" + id)
+        .then((response) => {
+            setIdReproduction(response.id);
+            setListBirths(response.births);
+            setStatus(response.status);
+            setPartner(response.partner);
+            setListLastHeats(response.lastHeats);
+            setCicleDuration(response.cycleDuration);
+            setValidForm({
+              status: '',
+              partner: '',
+              cycleDuration: ''
+            });
+        });
+      }
+    }, [])
 
     //Modal
     const [openModal, setOpenModal] = useState(false);
@@ -98,36 +123,49 @@ const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
       setListItemsDropdown(newList);
     } 
 
-    const onSubmit = (event: any): void => {
-      const formData = {
-        idAnimal: id,
-        births: listBirths,
-        status: status,
-        partner: partner,
-        lastHeats: [new Date()],
-        cycleDuration: cycleDuration,
-      };
-      event.preventDefault();
-      clearVariable();
-      if (!isEdit) {
-        postService("https://reproduction-rest-service-production.up.railway.app/api/reproduction", formData);
+    useEffect(() => {
+      const isValid = Object.keys(validForm).every(
+        (key) => validForm[key as keyof typeof validForm] === ''
+      )
+      if (isValid) {
+        setValidFormAnimal({
+          ...validFormAnimal,
+          reproduction: true
+        });
+        onSubmitData();
       } else {
-        putService("https://reproduction-rest-service-production.up.railway.app/api/reproduction/" + idReproduction, formData);
+        setValidFormAnimal({
+          ...validFormAnimal,
+          reproduction: false
+        });
       }
-    };
+    }, [validForm, listLastHeats, listBirths, cycleDuration, partner, status])
 
-    const clearVariable = () => {
-      setStatus('');
-      setPartner('');
-      setCicleDuration('');
-      setListBirths([]);
-      setListLastHeats([]);
-      setValidForm({
-        status: undefined,
-        partner: undefined,
-        cycleDuration: undefined,
+    const onSubmitData = () => {
+      let formData;
+      if (isEdit) {
+        formData = {
+          id: idReproduction,
+          idAnimal: id,
+          births: listBirths,
+          status: status,
+          partner: partner,
+          lastHeats: listLastHeats,
+          cycleDuration: cycleDuration,
+        };
+      } else {
+        formData = {
+          births: listBirths,
+          status: status,
+          partner: partner,
+          lastHeats: listLastHeats,
+          cycleDuration: cycleDuration,
+        };
+      }
+      setValidFormAnimalData({
+        ...validFormAnimalData,
+        reproduction: formData
       });
-      setOpenDropdown(false);
     }
 
     const handleStatusChange = (event: any) => {
@@ -177,13 +215,9 @@ const AnimalDataReproduction = ({id, isEdit}: FormProps) => {
       }
     }
 
-    const isValid = Object.keys(validForm).every(
-      (key) => validForm[key as keyof typeof validForm] === ''
-    )
-
     return (
       <>
-      <Form title={isEdit ? 'Edita los datos de Reproducción' : 'Añade los datos de Reproducción'} onSubmit={onSubmit} isValid={isValid} buttonText={isEdit ? 'Editar' : 'Crear'}>
+      <Form title={isEdit ? 'Edita los datos de Reproducción' : 'Añade los datos de Reproducción'}>
     
       <FormItem 
           title={'Estado Animal:'}

@@ -19,11 +19,8 @@ const FormAddLastHeats = ({newItem} : FormProps) => {
     });
 
     const onSubmit = (event: any): void => {
-        const formData = {
-          date: date,
-        };
         event.preventDefault();
-        newItem(JSON.stringify(formData));
+        newItem(JSON.stringify(date));
     };
 
     const handleDateChange = (event: any) => {

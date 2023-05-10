@@ -11,6 +11,7 @@ const LandPage = React.lazy(() => import("src/pages/LandPage"));
 const NewFarm = React.lazy(() => import("src/pages/NewFarmPage"));
 const NewRanch = React.lazy(() => import("src/pages/NewRanchPage"));
 const NewAnimal = React.lazy(() => import("src/pages/NewAnimalPage"));
+const EditAnimal = React.lazy(() => import("src/pages/EditAnimalPage"));
 const NewLand = React.lazy(() => import("src/pages/NewLandPage"));
 const AnimalData = React.lazy(() => import("src/pages/AnimalDataPage"));
 const NotFound = React.lazy(() => import("src/pages/NotFoundPage"));
@@ -105,7 +106,7 @@ function App() {
               </AppLayout>
             </Suspense>
           } />
-          <Route path="animals/new" element={
+          <Route path="animals/new/:idRanch" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
                 <NewAnimal />
@@ -115,7 +116,7 @@ function App() {
           <Route path="animals/edit/:id" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
-                <NewAnimal />
+                <EditAnimal />
               </AppLayout>
             </Suspense>
           } />

@@ -3,10 +3,10 @@ import './Form.css'
 
 type FormProps = {
     title?: string;
-    buttonText: string;
+    buttonText?: string;
     children: React.ReactNode;
-    isValid: boolean;
-    onSubmit: FormEventHandler;
+    isValid?: boolean;
+    onSubmit?: FormEventHandler;
     formError?: string;
 };
 
@@ -18,7 +18,7 @@ const Form = ({title, children, onSubmit, isValid, buttonText, formError}: FormP
                 <main className='form-items'>
                     {children}
                 </main>
-                <button className='submit-button' disabled={!isValid}>{buttonText}</button>
+                {buttonText && <button className='submit-button' disabled={!isValid}>{buttonText}</button>}
                 {formError && <span className="error" role="alert">{formError}</span>}
             </form>
         </>

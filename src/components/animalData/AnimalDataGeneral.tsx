@@ -2,9 +2,7 @@ import Form from 'components/form/Form';
 import FormItem from 'components/formItem/FormItem';
 import { useEffect, useState, useRef } from 'react';
 import SelectItem from '../selectItem/SelectItem';
-import {postService} from '../../services/postServices';
 import getService from 'src/services/getService';
-import {putService} from 'src/services/putService';
 
 interface FormType {
   name: undefined | string;
@@ -16,38 +14,43 @@ interface FormType {
   age: undefined | string;
 }
 
-interface FormProps {
-  id: undefined | string;
-  isEdit: boolean;
-  setId: React.Dispatch<React.SetStateAction<any>>;
+interface FormTypeAnimal {
+  general: boolean;
+  finance: boolean;
+  health: boolean;
+  production: boolean;
+  reproduction: boolean;
 }
 
-const AnimalDataGeneral = ({id, isEdit, setId}: FormProps) => {
+interface FormTypeData {
+  general: {};
+  finance: {};
+  health: {};
+  production: {};
+  reproduction: {};
+}
 
-    useEffect(() => {
-      if (isEdit) {
-        getService("https://animal-rest-service-production.up.railway.app/api/animals/" + id)
-        .then(value => {
-          setName(value.name);
-          setType(value.type);
-          setGender(value.gender);
-          setStage(value.stage);
-          setWeight(value.weight);
-          setBreed(value.breed);
-          setAge(value.age);
-          setValidForm({
-            name: '',
-            type: '',
-            gender: '',
-            stage: '',
-            weight: '',
-            breed: '',
-            age: '',
-          });
-        })
-      }
-    }, [isEdit])
+interface FormProps {
+  id: undefined | string;
+  idRanch: undefined | string;
+  isEdit: boolean;
+  validFormAnimal: FormTypeAnimal;
+  setValidFormAnimal: React.Dispatch<React.SetStateAction<any>>;
+  validFormAnimalData: FormTypeData;
+  setValidFormAnimalData: React.Dispatch<React.SetStateAction<any>>;
+}
 
+interface FormTypeId {
+  general: string | undefined;
+  finance: string | undefined;
+  health: string | undefined;
+  production: string | undefined;
+  reproduction: string | undefined;
+}
+
+const AnimalDataGeneral = ({id, idRanch, isEdit, validFormAnimal, setValidFormAnimal, validFormAnimalData, setValidFormAnimalData}: FormProps) => {
+
+    const [idGeneral, setIdGeneral] = useState('');
     const optionsType: string[] = ["Bovino", "Equino", "Pollo", "Conejo"];
     const optionsGender: string[] = ["Hembra", "Macho"];
     const selectRefTypes = useRef<HTMLSelectElement>(null);
@@ -71,44 +74,78 @@ const AnimalDataGeneral = ({id, isEdit, setId}: FormProps) => {
       age: undefined,
     });
 
-    const onSubmit = (event: any): void => {
-      const formData = {
-        idRanch: 1,
-        name: name,
-        type: type,
-        gender: gender,
-        stage: stage,
-        weight: weight,
-        breed: breed,
-        age: age,
-      };
-      event.preventDefault();
-      clearVariable();
-      if (!isEdit) {
-        postService("https://animal-rest-service-production.up.railway.app/api/animals", formData)
-        .then(data => setId(data.id));
-      } else {
-        putService("https://animal-rest-service-production.up.railway.app/api/animals/" + id, formData)
-        .then(data => setId(data.id));
+    useEffect(() => {
+      if (isEdit) {
+        getService("https://animal-rest-service-production.up.railway.app/api/animals/" + id)
+        .then(value => {
+          setIdGeneral(value.id);
+          setName(value.name);
+          setType(value.type);
+          setGender(value.gender);
+          setStage(value.stage);
+          setWeight(value.weight);
+          setBreed(value.breed);
+          setAge(value.age);
+          setValidForm({
+            name: '',
+            type: '',
+            gender: '',
+            stage: '',
+            weight: '',
+            breed: '',
+            age: '',
+          });
+        })
       }
-    }
+    }, [])
 
-    const clearVariable = () => {
-      setName('');
-      setType('');
-      setGender('');
-      setStage('');
-      setWeight('');
-      setBreed('');
-      setAge('');
-      setValidForm({
-        name: undefined,
-        type: '',
-        gender: '',
-        stage: undefined,
-        weight: undefined,
-        breed: undefined,
-        age: undefined,
+    useEffect(() => {
+      const isValid = Object.keys(validForm).every(
+        (key) => validForm[key as keyof typeof validForm] === ''
+      )
+      if (isValid) {
+        setValidFormAnimal({
+          ...validFormAnimal,
+          general: true
+        });
+        onSubmitData();
+      } else {
+        setValidFormAnimal({
+          ...validFormAnimal,
+          general: false
+        });
+      }
+    }, [validForm, name, type, gender, stage, weight, age])
+
+    const onSubmitData = () => {
+      let formData;
+      if (isEdit) {
+        formData = {
+          id: idGeneral,
+          idRanch: idRanch,
+          name: name,
+          type: type,
+          gender: gender,
+          stage: stage,
+          weight: weight,
+          breed: breed,
+          age: age,
+        };
+      } else {
+        formData = {
+          idRanch: idRanch,
+          name: name,
+          type: type,
+          gender: gender,
+          stage: stage,
+          weight: weight,
+          breed: breed,
+          age: age,
+        };
+      }
+      setValidFormAnimalData({
+        ...validFormAnimalData,
+        general: formData
       });
     }
 
@@ -159,7 +196,7 @@ const AnimalDataGeneral = ({id, isEdit, setId}: FormProps) => {
           weight: value.length === 0 ? 'El peso es obligatorio' : ''
         });
         setWeight(value);
-      }
+    }
 
     const handleBreedChange = (event: any) => {
       const value = event.target.value;
@@ -179,12 +216,8 @@ const AnimalDataGeneral = ({id, isEdit, setId}: FormProps) => {
       setAge(value);
     }
 
-    const isValid = Object.keys(validForm).every(
-      (key) => validForm[key as keyof typeof validForm] === ''
-    )
-
     return (
-    <Form title={isEdit ? 'Edita los datos Generales' : 'Añade los datos Generales'} onSubmit={onSubmit} isValid={isValid} buttonText={isEdit ? 'Editar' : 'Crear'}>
+    <Form title={isEdit ? 'Edita los datos Generales' : 'Añade los datos Generales'}>
     
     <FormItem 
         title={'Nombre:'}

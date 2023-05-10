@@ -7,6 +7,7 @@ import Modal from '../modal/Modal';
 import getService from 'src/services/getService';
 import Dropdown from '../dropdown/Dropdown';
 import './AnimalCard.css';
+import { keyWordsAnimalFinance, keyWordsAnimalGeneral, keyWordsAnimalHealth, keyWordsAnimalProduction, keyWordsAnimalReproduction } from 'src/helpers/keyParse';
 
 const AnimalInfo = () => {
 
@@ -28,20 +29,20 @@ const AnimalInfo = () => {
       getService("https://animal-rest-service-production.up.railway.app/api/animals/" + id)
         .then((response) => {
         setNameCow(response.name);
-        setDataGeneral(response);
+        setDataGeneral(keyWordsAnimalGeneral(response));
       });
       getService("https://finance-rest-service-production.up.railway.app/api/finance/animal/" + id)
         .then((response) => {
-        if (response.status != '404') setDataFinance(response);
+        if (response.status != '404') setDataFinance(keyWordsAnimalFinance(response));
       });
       getService("https://production-rest-service-production.up.railway.app/api/production/animal/" + id).then((response) => {
-        if (response.status != '404') setDataProduction(response);
+        if (response.status != '404') setDataProduction(keyWordsAnimalProduction(response));
       });
       getService("https://reproduction-rest-service-production.up.railway.app/api/reproduction/animal/" + id).then((response) => {
-        if (response.status != '404') setDataReproduction(response);
+        if (response.status != '404') setDataReproduction(keyWordsAnimalReproduction(response)); 
       });
       getService("https://health-rest-service-production.up.railway.app/api/health/animal/" + id).then((response) => {
-        if (response.status != '404') setDataHealth(response);
+        if (response.status != '404') setDataHealth(keyWordsAnimalHealth(response));
       });
     }, [])
 

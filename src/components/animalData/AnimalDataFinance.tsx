@@ -13,15 +13,50 @@ interface FormType {
 interface FormProps {
   id: undefined | string;
   isEdit: boolean;
+  validFormAnimal: FormTypeAnimal;
+  setValidFormAnimal: React.Dispatch<React.SetStateAction<any>>;
+  validFormAnimalData: FormTypeData;
+  setValidFormAnimalData: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const AnimalDataFinance = ({id, isEdit}: FormProps) => {
+interface FormTypeAnimal {
+  general: boolean;
+  finance: boolean;
+  health: boolean;
+  production: boolean;
+  reproduction: boolean;
+}
 
-    const [idFinance, setIdFinance] = useState('6436dce279c07e2ba8d6655b');
+interface FormTypeData {
+  general: {};
+  finance: {};
+  health: {};
+  production: {};
+  reproduction: {};
+}
+
+interface FormTypeId {
+  general: string | undefined;
+  finance: string | undefined;
+  health: string | undefined;
+  production: string | undefined;
+  reproduction: string | undefined;
+}
+
+const AnimalDataFinance = ({id, isEdit, validFormAnimal, setValidFormAnimal, validFormAnimalData, setValidFormAnimalData}: FormProps) => {
+
+    const [idFinance, setIdFinance] = useState('');
+    const [moneyProduced, setMoneyProduced] = useState('');
+    const [moneySpent, setMoneySpent] = useState('');
+
+    const [validForm, setValidForm] = useState<FormType>({
+      moneyProduced: undefined,
+      moneySpent: undefined,
+    });
 
     useEffect(() => {
       if (isEdit) {
-        getService("https://finance-rest-service-production.up.railway.app/api/finance/" + idFinance)
+        getService("https://finance-rest-service-production.up.railway.app/api/finance/animal/" + id)
         .then((response) => {
           setIdFinance(response.id);
           setMoneyProduced(response.moneyProduced);
@@ -32,37 +67,44 @@ const AnimalDataFinance = ({id, isEdit}: FormProps) => {
           });
         });
       }
-    }, [isEdit])
+    }, [])
 
-    const [moneyProduced, setMoneyProduced] = useState('');
-    const [moneySpent, setMoneySpent] = useState('');
-
-    const [validForm, setValidForm] = useState<FormType>({
-      moneyProduced: undefined,
-      moneySpent: undefined,
-    });
-
-    const onSubmit = (event: any): void => {
-      const formData = {
-        idAnimal: id,
-        moneyProduced: moneyProduced,
-        moneySpent: moneySpent,
-      };
-      event.preventDefault();
-      clearVariable();
-      if (!isEdit) {
-        postService("https://finance-rest-service-production.up.railway.app/api/finance", formData);
+    useEffect(() => {
+      const isValid = Object.keys(validForm).every(
+        (key) => validForm[key as keyof typeof validForm] === ''
+      )
+      if (isValid) {
+        setValidFormAnimal({
+          ...validFormAnimal,
+          finance: true
+        });
+        onSubmitData();
       } else {
-        putService("https://finance-rest-service-production.up.railway.app/api/finance/" + idFinance, formData);
+        setValidFormAnimal({
+          ...validFormAnimal,
+          finance: false
+        });
       }
-    }
+    }, [validForm, moneyProduced, moneySpent])
 
-    const clearVariable = () => {
-      setMoneyProduced('');
-      setMoneySpent('');
-      setValidForm({
-        moneyProduced: undefined,
-        moneySpent: undefined,
+    const onSubmitData = () => {
+      let formData;
+      if (isEdit) {
+        formData = {
+          id: idFinance,
+          idAnimal: id,
+          moneyProduced: moneyProduced,
+          moneySpent: moneySpent,
+        };
+      } else {
+        formData = {
+          moneyProduced: moneyProduced,
+          moneySpent: moneySpent,
+        };
+      }
+      setValidFormAnimalData({
+        ...validFormAnimalData,
+        finance: formData
       });
     }
 
@@ -84,12 +126,8 @@ const AnimalDataFinance = ({id, isEdit}: FormProps) => {
       setMoneySpent(value);
     }
 
-    const isValid = Object.keys(validForm).every(
-      (key) => validForm[key as keyof typeof validForm] === ''
-    )
-
     return (
-    <Form title={isEdit ? 'Edita los datos Financieros' : 'Añade los datos Financieros'} onSubmit={onSubmit} isValid={isValid} buttonText={isEdit ? 'Editar' : 'Crear'}>
+    <Form title={isEdit ? 'Edita los datos Financieros' : 'Añade los datos Financieros'} >
     
     <FormItem 
         title={'Dinero Producido:'}

@@ -11,7 +11,15 @@ type FormProps = {
 
 const Table = ({listObjects = [], isEdit, onDelete, onAdd}: FormProps) => {
 
-    const columns = (listObjects.length != 0)?Object.keys(listObjects[0]):["Agrega Datos"];
+    let col;
+    if (listObjects.length == 0) {
+      col = ["Agrega Datos"];
+    } else if (typeof listObjects[0] === "object") {
+      col = Object.keys(listObjects[0]);
+    } else {
+      col = ['Date'];
+    }
+    const columns = col;
 
     const handleOnDelete = (index: number) => {
       if (onDelete) onDelete(index);
@@ -33,11 +41,19 @@ const Table = ({listObjects = [], isEdit, onDelete, onAdd}: FormProps) => {
               </tr>
             </thead>
             <tbody>
-              {listObjects?.map((row, index) => (
-                <tr key={index}>
-                  {columns.map((column, index) => (
+              {listObjects?.map((row, index) => {
+                
+                let valueRow;
+                if (typeof row === "string") {
+                  valueRow = new Date(row).toLocaleString();
+                }
+                
+                return <tr key={index}>
+                  
+                  {(typeof listObjects[0] === "object")?columns.map((column, index) => (
                     <td key={index}>{row[column]}</td>
-                  ))}
+                  )):<td key={index}>{valueRow}</td>}
+
                   {
                     (isEdit &&
                     <td>
@@ -47,7 +63,7 @@ const Table = ({listObjects = [], isEdit, onDelete, onAdd}: FormProps) => {
                     </td>)
                   }
                 </tr>
-              ))}
+            } )}
             </tbody>
           </table>
           :<h1 className='no-items'>No Hay Items Para Mostrar</h1>

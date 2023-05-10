@@ -4,8 +4,12 @@ import { useParams } from 'react-router-dom';
 
 const AnimalsPage = () => {
 
-  //Id para consultar Animales del Rancho
   const { id } = useParams();
+
+  useEffect(() => {
+    console.log("EL id del Rancho es : " + id)
+  }, [])
+
   return (
     <Collection 
       title={'Tus Animales'} 
@@ -13,7 +17,7 @@ const AnimalsPage = () => {
       cardDescription={'En esta página puedes ver tus animales asociados al rancho. Puedes añadir nuevos, editar y eliminar los agregados.'}
       endpointUrl='https://animal-rest-service-production.up.railway.app/api/animals'
       iconUrl='/src/assets/vaca.svg'
-      addUrl='/animals/new'
+      addUrl={`/animals/new/${id}`}
       editUrl='/animals/edit/'
       cardUrl='/animal/'
     />

@@ -3,18 +3,15 @@ import { useParams } from 'react-router-dom';
 import AnimalData from 'src/components/animalData/AnimalData';
 
 const NewAnimalPage = () => {
-    const [isEdit, setIsEdit] = useState(false);
     
-    let { id } = useParams();
+    let { idRanch } = useParams();
 
     useEffect(() => {
-      if (id) {
-        setIsEdit(true);
-      }
+      console.log("New Animal Page, idRanch = " + idRanch)
     }, [])
 
     return (
-      <AnimalData id={id} isEdit={isEdit}/>
+      <AnimalData idRancho={idRanch} isEdit={false}/>
     );
 }
 
