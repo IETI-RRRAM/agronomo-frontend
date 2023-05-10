@@ -123,16 +123,9 @@ const AnimalData = ({idRancho, isEdit}: FormProps) => {
         })
     }
 
-    function prueba() {
-        console.log(validFormData);
-        console.log(validForm);
-    }
-
     return (
 
     <div className="component-container">
-
-        <button onClick={() => prueba()}>prueba</button>
 
         <div className='data-title'><h1>{(!isEdit)?"Agrega un nuevo Animal":"Edita la información del Animal"}</h1></div>
 

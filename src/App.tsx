@@ -85,38 +85,38 @@ function App() {
               </AppLayout>
             </Suspense>
           } />
-          <Route path="*" element={
-            <Suspense fallback={<Loading />}>
-              <AppLayout>
-                <NotFound />
-              </AppLayout>
-            </Suspense>
-          } />
           <Route path="animal/:id" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
-                <AnimalData />
+                {token ? <AnimalData /> : <LoginPage/> }
               </AppLayout>
             </Suspense>
           } />
           <Route path="animals/:id" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
-                <AnimalsPage />
+                {token ? <AnimalsPage /> : <LoginPage/> }
               </AppLayout>
             </Suspense>
           } />
           <Route path="animals/new/:idRanch" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
-                <NewAnimal />
+              {token ? <NewAnimal /> : <LoginPage/> }
               </AppLayout>
             </Suspense>
           } />
           <Route path="animals/edit/:id" element={
             <Suspense fallback={<Loading />}>
               <AppLayout>
-                <EditAnimal />
+                {token ? <EditAnimal /> : <LoginPage/> }
+              </AppLayout>
+            </Suspense>
+          } />
+          <Route path="*" element={
+            <Suspense fallback={<Loading />}>
+              <AppLayout>
+                <NotFound />
               </AppLayout>
             </Suspense>
           } />

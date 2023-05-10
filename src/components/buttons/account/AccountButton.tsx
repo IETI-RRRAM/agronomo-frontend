@@ -5,7 +5,7 @@ const AccountOpt = ({setAccountOptions} : any) => {
     const {setToken} = useContext(AuthContext)
     return ( 
         <ul>
-            <button className='submit-button account-button' onClick={()=> {
+            <button className='account-button' onClick={()=> {
                 localStorage.clear();
                 setToken("");
                 setAccountOptions(false);

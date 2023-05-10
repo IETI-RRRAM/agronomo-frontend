@@ -2,5 +2,15 @@
     position: absolute;
     top: 5rem;
     right: 1rem;
+    margin: 1rem;
+    font-size: medium;
+    background-color: var(--main-color);
+    border: 2px solid var(--main-color-dark);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+}
 
+.account-button:hover {
+    box-shadow: 0 0 20px 5px rgba(0,0,0,0.06);
+    cursor: pointer;
 }
